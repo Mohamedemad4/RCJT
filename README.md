@@ -6,7 +6,7 @@ Code for RCJ robot
 * Movement Strategy
 * Strategy Flowchart
 * Skeleton Code
-* ~~ Git Repo ~~
+* ~~Git Repo~~
 * Movement Code
 * Rescue Kit Delivery System
 * Chaise Design
