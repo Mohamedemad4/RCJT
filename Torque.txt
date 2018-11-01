@@ -1,0 +1,13 @@
+//given/estimations
+  mass = ~3kg
+  inclination degree = 25 degree
+  acceleration/gravity = 9.8 m/s^2
+  velocity =~ 0.3 m/s
+  robot height =~ 10 cm
+
+
+Total Torque = (Horizontal_Force + Force_on_Ramp) * Distance(estimated height of robot)
+Horizontal_Force = ma = 3 * 9.8 = 29.4 Newton
+Force_on_Ramp = mass * acceleration * Cos(theta) = 3 * 9.8 * Cos(25) =~ 26.6 Newton
+
+Total Torque = (29.4 + 26.6) * 0.1 = 5.6 NewtonMeter
