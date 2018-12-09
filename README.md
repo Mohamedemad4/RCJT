@@ -10,6 +10,6 @@ Code for RCJ robot
 * Movement Code
 * Rescue Kit Delivery System
 * Chaise Design
-* RAMP Calculations (hill)
-* Battery and Power Calculation
+* ~~Motor Sizing~~
+* Battery Calculation
 * Trap RGB system
