@@ -1,104 +1,58 @@
-//Simple movment test for the robot
+/*Pinout
+A0
+A1
+A2
+10 Servo
+*/
+
 #include <AFMotor.h>
+#include <NewPing.h>
 #include <Servo.h>
 
-int speed=100;
-AF_DCMotor bright(4, MOTOR12_64KHZ);
-AF_DCMotor bleft(3, MOTOR12_64KHZ);
+Servo name_servo;
+ 
+#define max_dist 100
+#define speed_default 100
+NewPing Sonar0(A0,A0,max_dist);
+NewPing Sonar1(A1,A1,max_dist);
+NewPing Sonar2(A2,A2,max_dist);
 
-AF_DCMotor fright(1, MOTOR12_64KHZ);
-AF_DCMotor fleft(2, MOTOR12_64KHZ);
+int servo_position = 0 ;
 
-Servo name_servo;               // Define any servo name
+
+AF_DCMotor bleft(1, MOTOR12_64KHZ);
+AF_DCMotor bright(2, MOTOR12_64KHZ);
+  
+AF_DCMotor fleft(3, MOTOR12_64KHZ);
+AF_DCMotor fright(4, MOTOR12_64KHZ);
+
 
 void setup(){
-	pinMode(A1, 1);
-    pinMode(A0, 1);
-    pinMode(A2,1);
-	name_servo.attach(10);          // Define the servo signal pins
+	name_servo.attach(10);
 	Serial.begin(9600);
-	fleft.setSpeed(speed);
-	fright.setSpeed(speed);
-	bleft.setSpeed(speed);
-	bright.setSpeed(speed);
+    setSpeeds(speed_default,speed_default,
+      speed_default,speed_default);
 }
 
-int GetCurrentDist(int pingPin){
-  digitalWrite(pingPin, LOW);
-  delay(2);
-  digitalWrite(pingPin, HIGH);
-  delay(5);
-  digitalWrite(pingPin, LOW);
-
-  pinMode(pingPin, INPUT);
-  return microsecondsToCentimeters(pulseIn(pingPin, HIGH));
+int GetDist(NewPing sonarN){
+    return sonarN.ping_cm();  
 }
-
-
-
-long microsecondsToCentimeters(long microseconds) {
-  return microseconds / 29 / 2;
-}
-
-
-
 void loop(){
-	int servo_position = 0 ;
-    drive_forward();
- 	for (servo_position = 0; servo_position <=180; servo_position +=1){
-	 	   name_servo.write(servo_position);
-	 	   delay(10);
-	 	   Serial.print("Distance on A0: ");
-	 	   Serial.println(GetCurrentDist(A0));
-	 	   Serial.print("Distance on A1: ");
-	 	   Serial.println(GetCurrentDist(A1));
-	 	   Serial.print("Distance on A2: ");
-	 	   Serial.println(GetCurrentDist(A2));
- 	}
- 	motor_stop();
-    for (servo_position=180; servo_position >= 0; servo_position -=1){
-    	name_servo.write(servo_position);
-    	delay(10);
-	 	Serial.print("Distance on A0: ");
-	 	Serial.println(GetCurrentDist(A0));
-	 	Serial.print("Distance on A1: ");
-	 	Serial.println(GetCurrentDist(A1));
-	 	Serial.print("Distance on A2: ");
-	 	Serial.println(GetCurrentDist(A2));
-  	}
+	delay(6000);
+	Serial.println("Starting");
+	drive_forward();
+	delay(6000);
+	Serial.println("Starting!");
+	motor_stop();
 }
 
-void motor_stop(){
-	fleft.run(RELEASE);
-	fright.run(RELEASE);
-	bleft.run(RELEASE);
-	bright.run(RELEASE);
-}
-
-void drive_forward(){
-	fleft.run(FORWARD);
-	fright.run(FORWARD);
-	bleft.run(FORWARD);
-	bright.run(FORWARD);	
-}
-
-void drive_backward(){
-	fleft.run(BACKWARD);
-	fright.run(BACKWARD);
-	bleft.run(BACKWARD);
-	bright.run(BACKWARD);
-}
-
-void turn_left(){
-	fleft.run(BACKWARD);
-	fright.run(FORWARD);
-	bleft.run(BACKWARD);
-	bright.run(FORWARD);
-}
-
-void turn_right(){
-	fleft.run(FORWARD);
-	fright.run(BACKWARD);
-	bleft.run(FORWARD);
-	bright.run(BACKWARD);
+void Servoloop(){
+  for (servo_position = 0; servo_position <=180; servo_position +=1){
+    name_servo.write(servo_position);
+    Serial.println(GetDist(Sonar0));
+  }
+  for (servo_position=180; servo_position >= 0; servo_position -=1){
+    name_servo.write(servo_position);
+    delay(10);
+  }
 }
