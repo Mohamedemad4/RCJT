@@ -12,10 +12,10 @@ void motor_stop(){
 }
 
 void drive_forward(){
-  fleft.run(BACKWARD);
-  fright.run(FORWARD);//FORWARD);
+  fleft.run(FORWARD);
+  fright.run(FORWARD);
   bleft.run(FORWARD);
-  bright.run(BACKWARD);  
+  bright.run(FORWARD);  
 }
 
 void drive_backward(){
