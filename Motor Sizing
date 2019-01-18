@@ -1,0 +1,17 @@
+*ESTIMATIONS*
+mass = 0.5 kg
+no. of motors = 4
+wheel radius = 0.025 m
+velocity = 50 m/s
+max incline = 25
+
+supply = 12 v
+acceleration = 0.5 m/s^2
+effeciency = 60%
+
+*OUTPUT (for worst case scenario aka ramp)*
+angular velocity = 190 rev/min
+torque = 0.25 kgf.cm  /  0.024 Nm
+power = 0.48 W
+max current = 40 mA
+battery pack = 22 mAh (for 8 minutes, wheels only)
