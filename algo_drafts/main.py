@@ -3,20 +3,56 @@ from env import *
 from utils import *
 
 
-#TODO:Make a maze before hand instead of making sth that probably has no structure but make the bot explore 1 by 1
+#TODO:Make a maze before hand instead of making sth that probably has no structure but makes the bot explore 1 by 1
 
 '''
-the robot only turns if the road upfront ends even if it detected no remaining victims in the area
-maybe scan the entire ally and if no victims are determined take a turn when ever possible 
+maybe scan the entire ally and if no victims are determined take a turn when ever possible (BAD IDEA,HW won't allow it)
 
+maybe stop scanning willy nilly and make it scan only when its called to avoid power consumption and make it much more effient (NOPE u can't detect faraway victims this way )
 I somehow need to use the Moves list for sth good right now it is not an actual DFS, just a dumb algorithm 
 
 '''
+TileW=30
 
+def CheckForVictims():
+    VizVictim=CheckVisuals() #returns the general direction of the found victim
+    HeatVictims=CheckThermals()
+
+    if VizVictim:
+      Sonic_reading=sonicMeasure(VizVictim) 
+      if Sonic_reading<=TileW:
+          return "viv" #victim in vacinty 
+      else:
+          return VizVictim
+
+    if HeatVictims:
+      Sonic_reading=sonicMeasure(HeatVictims) 
+      if Sonic_reading<=TileW:
+          return "viv" #victim in vacinty 
+      else:
+          return VizVictim
+    return False
 
 Moves=[{"F":0}]
 
 for i in range(10000):
+
+    Victim=CheckForVictims()
+    if Victim:
+      if Victim=="viv":
+        DropKit()
+      else: #this code helps the robot go to victims that it detects directly 
+        if Victim=='r':
+          r()
+          Moves.append({"R":1})
+        
+        if Victim=="l":  
+          l()
+          Moves.append({"L":1})
+        
+        if Victim=="f":
+          pass
+
     f_reading=sonicMeasure('f')
 
     if f_reading<=10: # turn if there are 10cm between u and the wall
