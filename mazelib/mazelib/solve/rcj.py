@@ -25,18 +25,20 @@ class rcj(MazeSolveAlgo):
         return solution
 
 
-    def _solve(self):
-        solution = []
-        self.placeVictims()
+    def _solve(self):       #    B
+        self.solution = []  #    |
+        self.placeVictims() #L---+---R
+        self.orintation="f" #    |
+                            #    F
         # a first move has to be made
         current = self.start
         if self._on_edge(self.start):
             current = self._push_edge(self.start)
-        solution.append(current)        
+        self.solution.append(current)        
 
         # pick a random neighbor and travel to it, until you're at the end
-        while not self._within_one(solution[-1], self.end):
-            self.pos=solution[-1]
+        while not self._within_one(self.solution[-1], self.end):
+            self.pos=self.solution[-1]
             
             ns = self._find_unblocked_neighbors(self.pos)
             nxt = choice(ns)
@@ -44,16 +46,45 @@ class rcj(MazeSolveAlgo):
             print(self.CheckForVictims())
             #print(solution[-1])
             #print(self.CheckVisuals(solution[-1]))
-            #solution.append(self._midpoint(solution[-1], nxt))# just for the presentation 
-            solution.append(nxt)
+            #self.solution.append(self._midpoint(solution[-1], nxt))# just for the presentation 
+            self.solution.append(nxt)
 
         if self.prune:
-            solution = self._prune_solution(solution)
+            self.solution = self._prune_solution(self.solution)
         print(self.grid)
-        solution = self._fix_entrances(solution)
+        sol = self._fix_entrances(self.solution)
         
-        return [solution]
+        return [sol]
     
+    def _validate_cords(self,pos2go):
+        try:
+            r=self.grid[pos2go[0]][pos2go[1]]
+        except:
+            return BaseError("your desired destination doesn't exist within the grid matrix")
+        if r==1 or r==2:
+            raise BaseError("WTF u gonna walk into a wall")
+        return True
+
+    def f(self):
+        pos2=(self.pos[0]+1,self.pos[1])
+        self._validate_cords(pos2)
+        self.solution.append(pos2)
+
+    def b(self):
+        pos2=(self.pos[0]-1,self.pos[1])
+        self._validate_cords(pos2)
+        self.solution.append((self.pos[0]-1,self.pos[1]))
+
+    def r(self):
+        pos2=(self.pos[0],self.pos[1]+1)
+        self._validate_cords(pos2)
+        self.solution.append((self.pos[0],self.pos[1]+1))
+
+    def l(self):
+        pos2=(self.pos[0],self.pos[1]-1)
+        self._validate_cords(pos2)
+        self.solution.append((self.pos[0],self.pos[1]-1))
+
     def _CheckVisuals(self):
         r,c=self.pos
 
