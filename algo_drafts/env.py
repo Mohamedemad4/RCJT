@@ -22,6 +22,27 @@ def r():
      fsensor_dist=0   
      s+='r\n'
 
+def MoveServo(d):
+    pass
+
+def readIR(s):
+    return random.choice([True,False])
+
+def DropKit():
+    print("KIT Droped")
+
+def CheckVisuals():
+    p=random.choice([True,False])
+    if p:
+        return random.choice(["f","l","r"])
+    return p
+
+def CheckThermals():
+    p=random.choice([True,False])
+    if p:
+        return random.choice(["l","f"])
+    return p       
+
 fsensor_dist=0 # so the length of the ally doesn't change randomly,but i-- cm by cm
 
 def sonicMeasure(sensor='whatever you want it to be,there lies your true destiny'):
