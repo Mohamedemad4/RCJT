@@ -1,11 +1,13 @@
+
 import random
+import numpy as np
 from random import choice
 import cython
 if not cython.compiled:
     from mazelib.solve.MazeSolveAlgo import MazeSolveAlgo
 
 
-class rcj(MazeSolveAlgo):
+class _rcj_env(MazeSolveAlgo):
     """
     The Algorithm
 
@@ -15,54 +17,34 @@ class rcj(MazeSolveAlgo):
         self.prune = prune
         self.victims=victims
         self.TileW=1
-    def _fix_entrances(self, solution):
-        if self.start in solution:
-            i = solution.index(self.start)
-            solution = solution[i+1:]
-        if self.end in solution:
-            i = solution.index(self.end)
-            solution = solution[:i]
-        return solution
 
+    def _rotateMaze(self,dir):
+        if dir<1:
+            raise BaseException("Nope No negs")
+        for i in range(dir/90):
+            self.grid=np.rot90(self.grid)
+        return True
 
-    def _solve(self):       #    B
-        self.solution = []  #    |
-        self.placeVictims() #L---+---R
-        self.orintation="f" #    |
-                            #    F
-        # a first move has to be made
+    def _solve(self):       
+        self.solution = []  
+        self.placeVictims() 
         current = self.start
         if self._on_edge(self.start):
             current = self._push_edge(self.start)
         self.solution.append(current)        
-
-        # pick a random neighbor and travel to it, until you're at the end
-        while not self._within_one(self.solution[-1], self.end):
-            self.pos=self.solution[-1]
-            
-            ns = self._find_unblocked_neighbors(self.pos)
-            nxt = choice(ns)
-            print(self.pos)
-            print(self.CheckForVictims())
-            #print(solution[-1])
-            #print(self.CheckVisuals(solution[-1]))
-            #self.solution.append(self._midpoint(solution[-1], nxt))# just for the presentation 
-            self.solution.append(nxt)
-
-        if self.prune:
-            self.solution = self._prune_solution(self.solution)
-        print(self.grid)
-        sol = self._fix_entrances(self.solution)
         
-        return [sol]
+        while len(self.solution)>200: # main code loop
+            self.pos=self.solution[-1] #our current position Don't Use this! this is for the maze sim code only!
+            
+        return [self.solution]
     
     def _validate_cords(self,pos2go):
         try:
             r=self.grid[pos2go[0]][pos2go[1]]
         except:
-            return BaseError("your desired destination doesn't exist within the grid matrix")
+            return BaseException("your desired destination doesn't exist within the grid matrix")
         if r==1 or r==2:
-            raise BaseError("WTF u gonna walk into a wall")
+            raise BaseException("u gonna walk into a wall")
         return True
 
     def f(self):
@@ -79,12 +61,14 @@ class rcj(MazeSolveAlgo):
         pos2=(self.pos[0],self.pos[1]+1)
         self._validate_cords(pos2)
         self.solution.append((self.pos[0],self.pos[1]+1))
-
+        self._rotateMaze(90)
+        
     def l(self):
         pos2=(self.pos[0],self.pos[1]-1)
         self._validate_cords(pos2)
         self.solution.append((self.pos[0],self.pos[1]-1))
-
+        self._rotateMaze(270)
+        
     def _CheckVisuals(self):
         r,c=self.pos
 
@@ -94,8 +78,6 @@ class rcj(MazeSolveAlgo):
                 return 'l'
         elif self.grid[r+self.SonicMeasure("f")][c]==2:
                 return 'f'
-        elif self.grid[r-self.SonicMeasure("b")][c]==2:
-            return 'b'
         else:
             return False
 
@@ -142,7 +124,7 @@ class rcj(MazeSolveAlgo):
         elif sensor=="r" or sensor=="f":
             d=0
         else:
-            raise BaseError("The FuckMan? there are only 4 directions")
+            raise BaseException("The FuckMan? there are only 4 directions")
         r,c=self.pos
         while True:
             try:
@@ -169,4 +151,4 @@ class rcj(MazeSolveAlgo):
         elif sensor=="r" or sensor=="f":
             return d
         else:
-            raise BaseError("this line is fucking useless")
+            raise BaseException("this line is fucking useless")

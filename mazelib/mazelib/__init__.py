@@ -19,7 +19,8 @@ from .generate.Wilsons import Wilsons
 from .solve.BacktrackingSolver import BacktrackingSolver
 from .solve.BlindAlley import BlindAlley
 from .solve.Chain import Chain
-from .solve.rcj import rcj
+from .solve.rcj_env import _rcj_env
+from .solve.rcj_rat_mohamed import rcj_rat_mohamed
 from .solve.Collision import Collision
 from .solve.CuldeSacFiller import CuldeSacFiller
 from .solve.RandomMouse import RandomMouse
