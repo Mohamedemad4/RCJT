@@ -1,17 +1,3 @@
-#include <SoftwareWire.h>
-#include <Wire.h>
-
-//Left Sensor connected to A8,A9
-//Right Sensor connected to Digital pins 20,21
-SoftwareWire Wire2( A8, A9);// SDA,SCL
-
-void setup()
-{
-  Serial.begin(9600);
-  Wire.begin(); 
-  Wire2.begin();
-}
-
 float GetIrHeatright(){
   float temp;
   uint16_t ret;
@@ -40,10 +26,32 @@ float GetIrHeatleft(){
   temp  -= 273.15;
   return temp;
 }
-void loop()
-{
-  Serial.println(GetIrHeatleft());
-  Serial.println(GetIrHeatright());
-  delay(2000);
 
+int isNotWithinRange(int range,int l1,int l2){
+  if ((fabs(l1-l2)>range)){
+    return 1;
+  }
+  return 0;
+
+}
+
+int GetDist(NewPing sonarN){
+    return sonarN.ping_cm();  
+}
+ 
+void sensorDebug(){
+         Serial.print("Distance on A0: ");
+         Serial.println(GetDist(sonar0));
+         Serial.print("Distance on A1: ");
+         Serial.println(GetDist(sonar1));
+         Serial.print("Distance on A2: ");
+         Serial.println(GetDist(sonar2));
+         
+         Serial.print("Heat on A9A8 (left): ");
+         Serial.println(GetIrHeatleft());
+         Serial.print("Heat on D21D20 (right): ");
+         Serial.println(GetIrHeatright());
+
+         Serial.print("IR Value: ");
+         Serial.println(analogRead(A3));
 }

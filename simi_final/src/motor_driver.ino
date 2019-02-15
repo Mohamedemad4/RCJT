@@ -44,3 +44,12 @@ void turn_right(){
   bleft.run(FORWARD);
   bright.run(BACKWARD);
 }
+
+void deploy(){
+	  motor_stop();
+	  delay(100);
+      deploy_servo.write(180);
+      delay(500);
+      deploy_servo.write(130);
+
+}
