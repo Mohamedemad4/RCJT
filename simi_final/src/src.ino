@@ -1,11 +1,5 @@
-/*Pinout
-A0
-A1
-A2
-10 Servo
-*/
-
 #include <Wire.h>
+#include <QMC5883L.h>
 #include <AFMotor.h>
 #include <NewPing.h>
 #include <Servo.h>
@@ -16,7 +10,7 @@ A2
 //Left Sensor connected to A8,A9
 //Right Sensor connected to Digital pins 20,21
 SoftwareWire Wire2( A8, A9);// SDA,SCL
-
+QMC5883L compass;
 Servo deploy_servo;
  
 #define max_dist 400
@@ -50,6 +44,9 @@ void setup(){
   Wire.begin(); 
   Wire2.begin(); 
   Serial.begin(9600);
+	 
+  compass.init();
+	 compass.setSamplingRate(50);
 
   setSpeeds(speed_default,speed_default,
       speed_default,speed_default);
