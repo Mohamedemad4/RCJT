@@ -1,3 +1,13 @@
+int getCurrentOrintation(){
+    return compass.readHeading();
+}
+
+int getZaxis(){
+  int16_t x,y,z,t;
+  compass.readRaw(&x,&y,&z,&t);
+  return z;
+}
+
 float GetIrHeatright(){
   float temp;
   uint16_t ret;
