@@ -10,6 +10,8 @@
 //Left Sensor connected to A8,A9
 //Right Sensor connected to Digital pins 20,21
 SoftwareWire Wire2( A8, A9);// SDA,SCL
+SoftwareWire Wire3( A15, A14);// SDA,SCL
+
 QMC5883L compass;
 Servo deploy_servo;
 Servo cam;
@@ -50,6 +52,7 @@ void setup(){
 
   Wire.begin(); 
   Wire2.begin(); 
+  Wire3.begin();
   Serial.begin(9600);
 	 
   compass.init();
