@@ -12,7 +12,10 @@
 SoftwareWire Wire2( A8, A9);// SDA,SCL
 QMC5883L compass;
 Servo deploy_servo;
- 
+Servo cam;
+
+volatile char cpos;
+
 #define max_dist 400
 #define speed_default 155
 #define speed_max 255
@@ -27,7 +30,6 @@ AF_DCMotor bleft(3, MOTOR34_1KHZ);
 AF_DCMotor bright(4, MOTOR34_1KHZ); 
 
 
-
 void setup(){  
   //Push Button
   pinMode(A11,INPUT_PULLUP);
@@ -40,6 +42,11 @@ void setup(){
   deploy_servo.write(130);
   
   digitalWrite(A12,0);
+  
+  pinMode(22,INPUT_PULLUP);
+  pinMode(23,INPUT_PULLUP);
+  pinMode(24,INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(18), checkForIns, CHANGE);
 
   Wire.begin(); 
   Wire2.begin(); 
@@ -87,4 +94,11 @@ void loop(){
       delay(500);
       }
   }
+}
+void vicDetect(){
+    if (digitalRead(24)==0){
+        Serial.println("victim Found!");
+        Serial.println(cpos);
+        digitalWrite(24,1); //drive the pin HIGH to confirm;
+    }
 }
