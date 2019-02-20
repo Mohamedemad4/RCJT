@@ -11,12 +11,12 @@ int getZaxis(){
 float GetIrHeatright(){
   float temp;
   uint16_t ret;
-  Wire.beginTransmission(0x5A); //device Slave address
-  Wire.write(0x07);             // request object temp in C
-  Wire.endTransmission(false);     // stop transmitting
-  Wire.requestFrom(0x5A, (uint8_t)3);// send data n-bytes read
-  ret = Wire.read(); // receive DATA
-  ret |= Wire.read() << 8; // left shift data by 8 Bits (taken from Adafuit MLX lib,IDK)
+  Wire3.beginTransmission(0x5A); //device Slave address
+  Wire3.write(0x07);             // request object temp in C
+  Wire3.endTransmission(false);     // stop transmitting
+  Wire3.requestFrom(0x5A, (uint8_t)3);// send data n-bytes read
+  ret = Wire3.read(); // receive DATA
+  ret |= Wire3.read() << 8; // left shift data by 8 Bits (taken from Adafuit MLX lib,IDK)
   temp=ret;
   temp *= .02;
   temp  -= 273.15;
