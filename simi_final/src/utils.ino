@@ -37,6 +37,27 @@ float GetIrHeatleft(){
   return temp;
 }
 
+
+void checkForIns(){
+    if (digitalRead(22)==1 && digitalRead(23)==1){
+    }
+    if (digitalRead(22)==1 &&digitalRead(23)==0){
+        Serial.println("Right");
+        cpos="r";
+        cam.write(160);
+    }
+    if (digitalRead(22)==0 && digitalRead(23)==1){
+        Serial.println("left");   
+        cpos="l";
+        cam.write(20);
+    }
+    if (digitalRead(22)==0 && digitalRead(23)==0){
+        Serial.println("Forward");
+        cpos="f";
+        cam.write(90);
+    }
+}
+
 int isNotWithinRange(int range,int l1,int l2){
   if ((fabs(l1-l2)>range)){
     return 1;
