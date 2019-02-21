@@ -45,7 +45,7 @@ void setup(){
   
   digitalWrite(A12,0);
   
-  cam.attach(13);
+  cam.attach(9);
   pinMode(22,INPUT_PULLUP);
   pinMode(23,INPUT_PULLUP);
   pinMode(24,INPUT_PULLUP);
