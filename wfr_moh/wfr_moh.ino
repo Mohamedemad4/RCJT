@@ -1,5 +1,4 @@
 #include <Wire.h>
-#include <QMC5883L.h>
 #include <AFMotor.h>
 #include <NewPing.h>
 #include <Servo.h>
@@ -12,7 +11,7 @@
 SoftwareWire Wire2( A8, A9);// SDA,SCL
 SoftwareWire Wire3( A15, A14);// SDA,SCL
 
-QMC5883L compass;
+HMC5883L mag;
 
 Servo deploy_servo;
 Servo cam;
@@ -54,13 +53,14 @@ void setup(){
   Wire.begin(); 
   Wire2.begin(); 
   Wire3.begin();
+  bmp085Init(0);    // Set Baseline @ sea level	
+  mag.initialize();
   Serial.begin(9600);
 	 
-  compass.init();
-	 compass.setSamplingRate(50);
-
   setSpeeds(speed_default,speed_default,
       speed_default,speed_default);
+	
+
   while(digitalRead(A11)==1){delay(50);}
   Serial.println("Starting...");
   delay(1000);
