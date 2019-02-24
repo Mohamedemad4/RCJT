@@ -27,14 +27,20 @@ float GetIrHeatleft(int w=0x07){//Check the readme for a des.
   return temp;
 }
 
-int getCurrentOrintation(){
-    return compass.readHeading();
+float getCompHeading(){
+   /* To calculate heading in degrees. 0 degree indicates North */
+   int16_t mx, my, mz;
+   mag.getHeading(&mx, &my, &mz);
+   float heading = atan2(my, mx);   
+   if(heading < 0)
+     heading += 2 * M_PI;
+   return heading * 180/M_PI;
 }
 
-int getZaxis(){
-  int16_t x,y,z,t;
-  compass.readRaw(&x,&y,&z,&t);
-  return z;
+float GetAlt(){
+  float temp,p,a;
+  bmp085Measure(&temp,&p,&a);
+  return a;
 }
 
 int GetDist(NewPing sonarN){
@@ -54,7 +60,14 @@ void sensorDebug(){
          Serial.print("Heat on D21D20 (right): ");
          Serial.println(GetIrHeatright());
 
+          
          Serial.print("IR Value: ");
-         Serial.println(analogRead(A3));
+         Serial.println(digitalRead(A3));
+  
+         Serial.print("Compass: ");
+         Serial.println(getCompHeading());
+  
+         Serial.print("Alt: ");
+         Serial.println(GetAlt());
 }
 
