@@ -24,6 +24,11 @@ NewPing left_us(A0,A0,max_dist);
 NewPing center_us(A1,A1,max_dist);
 NewPing right_us(A2,A2,max_dist);
 
+NewPing sonar0,sonar1,sonar2;
+sonar0=left_us;
+sonar1=center_us;
+sonar2=right_us;
+
 AF_DCMotor fleft(2, MOTOR12_1KHZ); 	
 AF_DCMotor fright(1, MOTOR12_1KHZ);
 
