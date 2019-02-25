@@ -1,75 +1,5 @@
-#include <Wire.h>
-#include <AFMotor.h>
-#include <NewPing.h>
-#include <Servo.h>
-#include <math.h>
-#include <SoftwareWire.h>
-#include "bmp085.h"
-#include "HMC5883L.h"
-#include "I2Cdev.h"
 
-//Left Sensor connected to A8,A9
-//Right Sensor connected to Digital pins 20,21
-SoftwareWire Wire2( A8, A9);// SDA,SCL
-SoftwareWire Wire3( A15, A14);// SDA,SCL
-
-HMC5883L mag;
-
-Servo deploy_servo;
-Servo cam;
-volatile int cpos=4; //contains current position of the cam Servo
-
-#define max_dist 400
-#define speed_default 155
-#define speed_max 255
-NewPing left_us(A0,A0,max_dist);
-NewPing center_us(A1,A1,max_dist);
-NewPing right_us(A2,A2,max_dist);
-
-
-AF_DCMotor fleft(2, MOTOR12_1KHZ); 	
-AF_DCMotor fright(1, MOTOR12_1KHZ);
-
-AF_DCMotor bleft(3, MOTOR34_1KHZ); 
-AF_DCMotor bright(4, MOTOR34_1KHZ); 
-
-
-void setup(){  
-  //Push Button
-  pinMode(A11,INPUT_PULLUP);
-  pinMode(A12,1);
-
-  //IR Color Sensor
-  pinMode(A3, INPUT);
-
-  deploy_servo.attach(10);
-  deploy_servo.write(130);
-  
-  digitalWrite(A12,0);
-  
-  cam.attach(9);
-  pinMode(22,INPUT_PULLUP);
-  pinMode(23,INPUT_PULLUP);
-  pinMode(24,INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(18), checkForIns, CHANGE);
-
-  Wire.begin(); 
-  Wire2.begin(); 
-  Wire3.begin();
-  bmp085Init(0);    // Set Baseline @ sea level	
-  mag.initialize();
-  Serial.begin(9600);
-	 
-  setSpeeds(speed_default,speed_default,
-      speed_default,speed_default);
-	
-
-  while(digitalRead(A11)==1){delay(50);}
-  Serial.println("Starting...");
-  delay(1000);
-}
-  
-void loop(){
+void AvoidLogic(){
   
 while(GetDist(center_us)>=8){
   drive_forward();
@@ -86,4 +16,22 @@ while(GetDist(center_us)<8 && GetDist(right_us)<7){
   }  
 
   
+}
+
+void lineFollowLogic(){
+  
+while(GetDist(center_us)>=10){
+  drive_forward();
+  }
+
+while(GetDist(center_us)<10 && GetDist(right_us)>=7){
+  turn_right();
+  delay(500);
+  }  
+
+while(GetDist(center_us)<10 && GetDist(right_us)<7){
+  turn_left();
+  delay(500);
+  }  
+
 }
