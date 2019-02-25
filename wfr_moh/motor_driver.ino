@@ -1,4 +1,26 @@
+void turn(int dc,bool pos){
+  //pos=1 turns to the right
+  int c;
+  int CcompHeading;
+  CcompHeading=getCompHeading();
+  if (pos){
+    c=CcompHeading+dc;
+    if (c>360){
+      c=c-360;
+    }
+  }else{
+    c=fabs(CcompHeading-dc);
+  }
+while(isNotWithinRange(3,c,getCompHeading())){
+  if (pos){
+    turn_right();
+  }else{
+    turn_left();
+  }
+}
+motor_stop();
 
+}
 void setSpeeds(int fleft_s ,int fright_s ,int bleft_s , int bright_s ){
   fleft.setSpeed(fleft_s);
   fright.setSpeed(fright_s);

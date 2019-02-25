@@ -12,7 +12,7 @@
 
 //Left Sensor connected to A8,A9
 //Right Sensor connected to Digital pins 20,21
-SoftwareWire Wire2( A8, A9);// SDA,SCL
+SoftwareWire Wire2( A4, A5);// SDA,SCL
 
 MPU6050 accc ;
 HMC5883L mag;
@@ -38,7 +38,7 @@ AF_DCMotor bright(4, MOTOR34_1KHZ);
 void setup(){  
   //Push Button
   pinMode(A11,INPUT_PULLUP);
-  pinMode(A12,1);
+  pinMode(A10,1);
 
   //IR Color Sensor
   pinMode(A3, INPUT);
@@ -46,7 +46,7 @@ void setup(){
   deploy_servo.attach(10);
   deploy_servo.write(130);
   
-  digitalWrite(A12,0);
+  digitalWrite(A10,0);
   
   cam.attach(9);
   pinMode(22,INPUT_PULLUP);
@@ -71,19 +71,8 @@ void setup(){
   Serial.println("Starting...");
   delay(1000);
 }
-  
+
 void loop(){//each iteration should take up a tile TODO::
-  unsigned long currentMillis = millis();
-  unsigned long previousMillis = 0;        // will store last time LED was updated
- 
-  if(!isThisWall(center_us)){
-   drive_forward(); 
-  }
-  if (GetDist(right_us)>10){
-    turn_right();
-  }
-  if (currentMillis - previousMillis >= 1000) { //run this function every 1000ms
-    previousMillis = currentMillis;
-    CheckForVicimsAndDropKits(); //returns 1 after first success
-  }
+sensorDebug();
+delay(1000);
 }
