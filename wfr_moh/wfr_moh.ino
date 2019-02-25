@@ -1,16 +1,20 @@
 #include <Wire.h>
-#include <AFMotor.h>
-#include <NewPing.h>
 #include <Servo.h>
 #include <math.h>
-#include <SoftwareWire.h>
 
+#include "AFMotor.h"
+#include "NewPing.h"
+#include "SoftwareWire.h"
+#include "HMC5883L.h"
+#include "bmp085.h"
+#include "I2Cdev.h"
+#include "MPU6050.h"
 
 //Left Sensor connected to A8,A9
 //Right Sensor connected to Digital pins 20,21
 SoftwareWire Wire2( A8, A9);// SDA,SCL
-SoftwareWire Wire3( A15, A14);// SDA,SCL
 
+MPU6050 accc ;
 HMC5883L mag;
 
 Servo deploy_servo;
@@ -23,11 +27,6 @@ volatile int cpos=4; //contains current position of the cam Servo
 NewPing left_us(A0,A0,max_dist);
 NewPing center_us(A1,A1,max_dist);
 NewPing right_us(A2,A2,max_dist);
-
-NewPing sonar0,sonar1,sonar2;
-sonar0=left_us;
-sonar1=center_us;
-sonar2=right_us;
 
 AF_DCMotor fleft(2, MOTOR12_1KHZ); 	
 AF_DCMotor fright(1, MOTOR12_1KHZ);
@@ -57,7 +56,9 @@ void setup(){
 
   Wire.begin(); 
   Wire2.begin(); 
-  Wire3.begin();
+  
+  accc.initialize(); //see README
+  accc.setI2CBypassEnabled(true);
   bmp085Init(0);    // Set Baseline @ sea level	
   mag.initialize();
   Serial.begin(9600);
