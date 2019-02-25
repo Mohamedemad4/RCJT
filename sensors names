@@ -1,0 +1,17 @@
+GetDist
+left_us();
+center_us();
+right_us();
+
+motor_stop();
+drive_forward();
+drive_backward();
+turn_left();
+turn_right();
+
+drop_kit();
+
+checkForIns();
+
+GetIrHeatleft()
+GetIrHeatright()
