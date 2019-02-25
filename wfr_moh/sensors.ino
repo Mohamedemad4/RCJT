@@ -1,12 +1,12 @@
 float GetIrHeatright(int w=0x07){
   float temp;
   uint16_t ret;
-  Wire3.beginTransmission(0x5A); //device Slave address
-  Wire3.write(byte(w));             // request object temp in C
-  Wire3.endTransmission(false);     // stop transmitting
-  Wire3.requestFrom(0x5A, 3);// send data n-bytes read //(uint8_t)
-  ret = Wire3.read(); // receive DATA
-  ret |= Wire3.read() << 8; // left shift data by 8 Bits (taken from Adafuit MLX lib,IDK)
+  Wire.beginTransmission(0x5A); //device Slave address
+  Wire.write(byte(w));             // request object temp in C
+  Wire.endTransmission(false);     // stop transmitting
+  Wire.requestFrom(0x5A, 3);// send data n-bytes read //(uint8_t)
+  ret = Wire.read(); // receive DATA
+  ret |= Wire.read() << 8; // left shift data by 8 Bits (taken from Adafuit MLX lib,IDK)
   temp=ret;
   temp *= .02;  
   temp  -= 273.15;
@@ -61,7 +61,7 @@ void sensorDebug(){
          Serial.println(GetIrHeatright());
 
           
-         Serial.print("IR Value: ");
+         Serial.print("Color IR Value: ");
          Serial.println(digitalRead(A3));
   
          Serial.print("Compass: ");
