@@ -69,15 +69,15 @@ void turn_right(){
 }
 
 void drop_kit(){
-	  motor_stop();
-	  delay(100);
+    motor_stop();
+    delay(100);
     deploy_servo.write(180);
     delay(500);
     deploy_servo.write(130);
 
 }
 
-void checkForIns(){
+void ServoINT(){
     if (digitalRead(22)==1 && digitalRead(23)==1){
     }
     if (digitalRead(22)==1 &&digitalRead(23)==0){
