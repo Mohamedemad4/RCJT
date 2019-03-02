@@ -55,3 +55,20 @@ bool checkVizWallsandDropKits(){
 
     return 0;
 }
+
+void VizVictimINT(){
+    if (digitalRead(22)==1 && digitalRead(23)==1){
+    }
+    if (digitalRead(22)==1 &&digitalRead(23)==0){
+        Serial.println("H");
+        vtype=2;
+    }
+    if (digitalRead(22)==0 && digitalRead(23)==1){
+        Serial.println("U");   
+        vtype=0;
+    }
+    if (digitalRead(22)==0 && digitalRead(23)==0){
+        Serial.println("S");
+        vtype=1;
+    }
+}
