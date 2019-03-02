@@ -51,8 +51,8 @@ void setup(){
   cam.attach(9);
   pinMode(22,INPUT_PULLUP);
   pinMode(23,INPUT_PULLUP);
-  pinMode(24,INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(18), checkForIns, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(18), ServoINT, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(19), VizVictimINT, CHANGE);
 
   Wire.begin(); 
   Wire2.begin(); 
