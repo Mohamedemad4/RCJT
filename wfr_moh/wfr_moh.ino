@@ -19,7 +19,8 @@ HMC5883L mag;
 
 Servo deploy_servo;
 Servo cam;
-volatile int cpos=4; //contains current position of the cam Servo
+volatile int cpos=4; //contains current position of the cam Servo,2=right,0=left,1=Forward
+volatile int vtype=4; //contains the Viz victims type,2=H,0=U,1=S
 
 #define max_dist 400
 #define speed_default 155
@@ -49,10 +50,19 @@ void setup(){
   digitalWrite(A10,0);
   
   cam.attach(9);
-  pinMode(22,INPUT_PULLUP);
+  // for the 2 Digital comm pins
+  pinMode(22,INPUT_PULLUP); 
   pinMode(23,INPUT_PULLUP);
+  // for the Interrupt pins
+  pinMode(18,INPUT_PULLUP)
+  pinMode(19,INPUT_PULLUP)
+  pinMode(15,INPUT_PULLUP)
+  pinMode(14,INPUT_PULLUP)
+  
   attachInterrupt(digitalPinToInterrupt(18), ServoINT, CHANGE);
   attachInterrupt(digitalPinToInterrupt(19), VizVictimINT, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(15), Pause, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(14), resetFunc, CHANGE);
 
   Wire.begin(); 
   Wire2.begin(); 

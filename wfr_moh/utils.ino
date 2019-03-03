@@ -1,4 +1,7 @@
-
+void pause(){
+  while(digitalRead(A11)==1){delay(50);}
+}
+void(* resetFunc) (void) = 0; //declare reset function @ address 0
 bool isNotWithinRange(int range,int l1,int l2){
   if ((fabs(l1-l2)>range)){
     return 1;
