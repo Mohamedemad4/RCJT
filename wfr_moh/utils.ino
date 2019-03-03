@@ -37,21 +37,31 @@ bool CheckForVicimsAndDropKits(){
 }
 
 bool checkVizWallsandDropKits(){
+  int nKits;
+  if (vtype==2){ //H
+      nKits=2;
+  }
+  if(vtype==1){ //S
+    nKits=1;
+  }
+  if(vtype==0){ //S
+    nKits=0;
+  }
   if (cpos==1){
       if(isThisWall(center_us)){
-          drop_kit();
+          drop_kit(nKits);
           return 1;
       }
     }
     else if (cpos==0){
       if(isThisWall(left_us)){
-          drop_kit();
+          drop_kit(nKits);
           return 1;
       }
     }
     else if (cpos==2){
       if(isThisWall(right_us)){
-        drop_kit();
+        drop_kit(nKits);
         return 1;
       }
     }

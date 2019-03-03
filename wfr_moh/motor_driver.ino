@@ -68,13 +68,21 @@ void turn_right(){
   bright.run(BACKWARD);
 }
 
-void drop_kit(){
+void drop_kit(int nKits=1){
     motor_stop();
-    delay(100);
-    deploy_servo.write(180);
-    delay(500);
-    deploy_servo.write(130);
-
+    int i;
+    for (i=0;i<25;i++){ //(100+100)*25=5000Msec
+      delay(100);
+      digitalWrite(13,1);
+      delay(100);
+      digitalWrite(13,0);
+    }
+    for (nKits,nKits>0,nKits-1){
+      delay(100);
+      deploy_servo.write(180);
+      delay(500);
+      deploy_servo.write(130);
+    }
 }
 
 void ServoINT(){
