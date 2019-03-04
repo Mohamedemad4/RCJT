@@ -19,9 +19,11 @@ HMC5883L mag;
 
 Servo deploy_servo;
 Servo cam;
+int gotoVic;
+volatile bool VizvictimIsDetected;
 volatile int cpos=4; //contains current position of the cam Servo,2=right,0=left,1=Forward
 volatile int vtype=4; //contains the Viz victims type,2=H,0=U,1=S
-
+#define LED_PIN 13 //change Me 
 #define max_dist 400
 #define speed_default 155
 #define speed_max 255
@@ -35,7 +37,7 @@ AF_DCMotor fright(1, MOTOR12_1KHZ);
 AF_DCMotor bleft(3, MOTOR34_1KHZ); 
 AF_DCMotor bright(4, MOTOR34_1KHZ); 
 
-
+void(* resetFunc) (void) = 0; //declare reset function @ address 0,crash the machine
 void setup(){  
   //Push Button
   pinMode(A11,INPUT_PULLUP);
@@ -54,10 +56,10 @@ void setup(){
   pinMode(22,INPUT_PULLUP); 
   pinMode(23,INPUT_PULLUP);
   // for the Interrupt pins
-  pinMode(18,INPUT_PULLUP)
-  pinMode(19,INPUT_PULLUP)
-  pinMode(15,INPUT_PULLUP)
-  pinMode(14,INPUT_PULLUP)
+  pinMode(18,INPUT_PULLUP);
+  pinMode(19,INPUT_PULLUP);
+  pinMode(15,INPUT_PULLUP);
+  pinMode(14,INPUT_PULLUP);
   
   attachInterrupt(digitalPinToInterrupt(18), ServoINT, CHANGE);
   attachInterrupt(digitalPinToInterrupt(19), VizVictimINT, CHANGE);
@@ -83,6 +85,58 @@ void setup(){
 }
 
 void loop(){//each iteration should take up a tile TODO::
-sensorDebug();
-delay(1000);
+  //right wall follower 
+      while(GetDist(center_us)>15){
+          drive_forward();
+        }
+ 
+          //!!!dont forget to calibrate the us_  in the maze!!!
+          
+         if(GetDist(center_us)<=15  ){  //found a wall infront of you!
+          
+          if(GetDist(right_us)>=7){//turn right if there isn't a wall on the right
+            turn(90,1);
+
+          }
+
+            else if(GetDist(right_us)<7){// turn left if there is a wall on the right
+              turn(90,0);
+              }
+         }
+
+         if(GetDist(center_us)<=7 && GetDist(right_us)<=7 && GetDist(left_us)<=7){  //emergyncy if the robot was traped in a 3 walled tile 
+            turn(180,0);
+          }
+
+          if(GetDist(right_us)>=7){//always right
+              turn(90,1);
+            }
+
+
+            //!!!dont forget to calibrate the delay  in the maze!!!
+          while(GetDist(right_us)<=7){//aligment right
+              turn_left();
+              delay(50);
+            }
+
+
+            while(GetDist(left_us)<=7){//aligment left
+              turn_right();
+              delay(50);
+            }
+            
+            if(digitalRead(A3)==1){//if a trap is found 
+              motor_stop();
+              delay(200);
+              drive_backward();
+              delay(300);
+
+              if(GetDist(left_us)>GetDist(right_us)){//turn left if left is greater than right
+                turn(90,0);
+                }
+
+              else if(GetDist(left_us)<GetDist(right_us)){//turn right if right is greater than left
+                turn(90,1);
+                }
+              }
 }
