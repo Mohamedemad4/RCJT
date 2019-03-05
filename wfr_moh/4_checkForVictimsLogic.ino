@@ -19,7 +19,7 @@ bool CheckForVicimsAndDropKits(){
       drop_kit(1);
       return 1;
     }if(!isThisWall(right_us) && gotoVic){
-      turn(90,0);
+      turn(90,1);
       return 1;
     }
   }

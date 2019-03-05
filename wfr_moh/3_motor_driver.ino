@@ -18,8 +18,6 @@ while(isNotWithinRange(3,c,getCompHeading())){
     turn_left();
   }
 }
-motor_stop();
-
 }
 void setSpeeds(int fleft_s ,int fright_s ,int bleft_s , int bright_s ){
   fleft.setSpeed(fleft_s);

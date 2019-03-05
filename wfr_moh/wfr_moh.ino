@@ -19,14 +19,14 @@ HMC5883L mag;
 
 Servo deploy_servo;
 Servo cam;
-int gotoVic;
+bool gotoVic;
 volatile bool VizvictimIsDetected;
 volatile int cpos=4; //contains current position of the cam Servo,2=right,0=left,1=Forward
 volatile int vtype=4; //contains the Viz victims type,2=H,0=U,1=S
 #define LED_PIN 13 //change Me 
 #define max_dist 400
-#define speed_default 155
-#define speed_max 255
+#define speed_default 100
+#define speed_max 155
 NewPing left_us(A0,A0,max_dist);
 NewPing center_us(A1,A1,max_dist);
 NewPing right_us(A2,A2,max_dist);
@@ -73,18 +73,30 @@ void setup(){
   accc.setI2CBypassEnabled(true);
   bmp085Init(0);    // Set Baseline @ sea level	
   mag.initialize();
+  //mag.setDataRat();setDataRate
   Serial.begin(9600);
 	 
   setSpeeds(speed_default,speed_default,
       speed_default,speed_default);
 	
-
+  Serial.println("Ready ...");
   while(digitalRead(A11)==1){delay(50);}
   Serial.println("Starting...");
   delay(1000);
 }
-
-void loop(){//each iteration should take up a tile TODO::
+void lop(){
+  sensorDebug();
+  delay(500);
+}
+void loop(){
+  turn(90,1);
+  delay(1000);
+  drive_forward();
+  delay(3000);
+  turn(90,0);
+  while (true){}
+}
+void p(){//each iteration should take up a tile TODO::
   //right wall follower 
       while(GetDist(center_us)>15){
           drive_forward();
