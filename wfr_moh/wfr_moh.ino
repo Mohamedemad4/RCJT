@@ -9,6 +9,7 @@
 #include "bmp085.h"
 #include "I2Cdev.h"
 #include "MPU6050.h"
+#include "TimerOne.h"
 
 //Left Sensor connected to A8,A9
 //Right Sensor connected to Digital pins 20,21
@@ -65,6 +66,9 @@ void setup(){
   attachInterrupt(digitalPinToInterrupt(19), VizVictimINT, CHANGE);
   attachInterrupt(digitalPinToInterrupt(15), Pause, CHANGE);
   attachInterrupt(digitalPinToInterrupt(14), resetFunc, CHANGE);
+  
+  Timer1.initialize(500000); // in uS
+  Timer1.attachInterrupt(CheckForVicimsAndDropKits); // run 2 times every  seconds
 
   Wire.begin(); 
   Wire2.begin(); 
