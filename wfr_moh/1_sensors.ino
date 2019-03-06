@@ -46,7 +46,10 @@ float GetAlt(){
 int GetDist(NewPing sonarN){
     return sonarN.ping_cm();  
 }
- 
+
+int16_t GetAccXpY(){
+  return accc.getAccelerationX();//+accc.getAccelerationY();
+} 
 void sensorDebug(){
          Serial.print("Distance on A0: ");
          Serial.println(GetDist(left_us));
@@ -55,7 +58,7 @@ void sensorDebug(){
          Serial.print("Distance on A2: ");
          Serial.println(GetDist(right_us));
          
-         Serial.print("Heat on A9A8 (left): ");
+         Serial.print("Heat on A4A5 (left): ");
          Serial.println(GetIrHeatleft());
          Serial.print("Heat on D21D20 (right): ");
          Serial.println(GetIrHeatright());
@@ -70,4 +73,3 @@ void sensorDebug(){
          Serial.print("Alt: ");
          Serial.println(GetAlt());
 }
-

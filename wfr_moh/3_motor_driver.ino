@@ -68,6 +68,7 @@ void turn_right(){
 
 void drop_kit(int nKits=1){
     motor_stop();
+    StartCheckingForVics=0;
     int i;
     for (i=0;i<25;i++){ //(100+100)*25=5000Msec
       delay(100);
@@ -86,6 +87,7 @@ void drop_kit(int nKits=1){
       delay(500);
       deploy_servo.write(130);
    }
+   StartCheckingForVics=1;// imagine how hillarouis that rec would look
 }
 
 void ServoINT(){

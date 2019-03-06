@@ -20,13 +20,18 @@ HMC5883L mag;
 
 Servo deploy_servo;
 Servo cam;
+volatile int accelReadings[10];
+volatile int base_accelReadings[10];
+volatile int accelReadings_curInd;
 bool gotoVic;
+bool StartCheckingForVics; //if set to one will start using CheckForVicimsAndDropKits every 0.5 Seconds
 volatile bool VizvictimIsDetected;
 volatile int cpos=4; //contains current position of the cam Servo,2=right,0=left,1=Forward
 volatile int vtype=4; //contains the Viz victims type,2=H,0=U,1=S
+
 #define LED_PIN 13 //change Me 
 #define max_dist 400
-#define speed_default 100
+#define speed_default 255//100
 #define speed_max 155
 NewPing left_us(A0,A0,max_dist);
 NewPing center_us(A1,A1,max_dist);
@@ -66,32 +71,46 @@ void setup(){
   attachInterrupt(digitalPinToInterrupt(19), VizVictimINT, CHANGE);
   attachInterrupt(digitalPinToInterrupt(15), Pause, CHANGE);
   attachInterrupt(digitalPinToInterrupt(14), resetFunc, CHANGE);
-  
   Timer1.initialize(500000); // in uS
-  Timer1.attachInterrupt(CheckForVicimsAndDropKits); // run 2 times every  seconds
-
+  Timer1.attachInterrupt(CheckForVicimsAndDropKits); // run 2 times every  seconds 
+  //---           ---
+  //   \_(*)_(*)_/ IDK
+  //using noInterrupts(); to disable INTs actually causes some arduino Funcs that use millis(); to not function ,and it somehow affects the USB Serial
+  
   Wire.begin(); 
   Wire2.begin(); 
-  
+  Serial.begin(9600);
+
+  Serial.println("Setting Up 10DOF sensors");
   accc.initialize(); //see README
   accc.setI2CBypassEnabled(true);
   bmp085Init(0);    // Set Baseline @ sea level	
   mag.initialize();
-  //mag.setDataRat();setDataRate
-  Serial.begin(9600);
-	 
+  mag.setDataRate(5);
+  Serial.println("10DOF Ready");
+	Serial.println("Gathring Data for LOPD system");
+  int i=0;
+  for (i;i<10;i++){
+    base_accelReadings[accelReadings_curInd]=GetAccXpY(); //TODO:make me more fancy with 2D arrays
+    if (accelReadings_curInd<10){
+     accelReadings_curInd++;
+    }else if(accelReadings_curInd==10){
+     accelReadings_curInd=0;
+   }
+   delay(500);
+  }
+  accelReadings_curInd=0;
+
   setSpeeds(speed_default,speed_default,
       speed_default,speed_default);
 	
   Serial.println("Ready ...");
   while(digitalRead(A11)==1){delay(50);}
   Serial.println("Starting...");
+  StartCheckingForVics=1;
   delay(1000);
 }
-void lop(){
-  sensorDebug();
-  delay(500);
-}
+
 void loop(){
   turn(90,1);
   delay(1000);
