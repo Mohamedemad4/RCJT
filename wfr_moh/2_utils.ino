@@ -53,3 +53,37 @@ void VizVictimINT(){
         VizvictimIsDetected=1;
     }
 }
+void checkForLOPD(){
+  if (accc.testConnection()==true){
+    accelReadings[accelReadings_curInd]=GetAccXpY();
+    if (accelReadings_curInd<10){
+      accelReadings_curInd++;
+    }else if(accelReadings_curInd==10){
+      accelReadings_curInd=0;
+      SeeIfLOP(); //to much global vars for my taste
+    }
+  }
+}
+
+void runLOPD(){
+  int i=0;
+  for (i;i<10;i++){
+    base_accelReadings[accelReadings_curInd]=GetAccXpY(); //TODO:make me more fancy with 2D arrays
+    if (accelReadings_curInd<10){
+     accelReadings_curInd++;
+    }else if(accelReadings_curInd==10){
+     accelReadings_curInd=0;
+   }
+   delay(500);
+  }
+  accelReadings_curInd=0;
+}
+
+void checkForimpTimeStuff(){
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillisCheckForImpTStuff >= 500) {//is True every 0.5S
+    previousMillisCheckForImpTStuff = currentMillis;
+    checkForLOPD();
+    CheckForVicimsAndDropKits();
+  }
+}
