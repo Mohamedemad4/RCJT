@@ -2,22 +2,12 @@ void CheckForVicimsAndDropKits(){
   if (StartCheckingForVics==0){
      return;
     }
-  accelReadings[accelReadings_curInd]=GetAccXpY();
-  if (accelReadings_curInd<10){
-    accelReadings_curInd++;
-  }else if(accelReadings_curInd==10){
-    accelReadings_curInd=0;
-    SeeIfLOP();
-  }
-  
-  Serial.println("INT!!");
-  /*if (VizvictimIsDetected==1){
+  if (VizvictimIsDetectsted==1){
     VizvictimIsDetected=0;       //confirm
     checkVizWallsandDropKits();
     return;
     }
-  if (!isNotWithinRange(28,GetIrHeatleft(),40)){ //see if there is even anything
-    Serial.println("sA");
+  if (!isNotWithinRange(10,GetIrHeatleft(),40)){ //see if there is even anything
     if(isThisWall(left_us)){ //check walls
       turn(90,1);
       drop_kit(1);  
@@ -27,7 +17,7 @@ void CheckForVicimsAndDropKits(){
       return;
     }
   }
-  if (!isNotWithinRange(28,GetIrHeatright(),40)){
+  if (!isNotWithinRange(10,GetIrHeatright(),40)){
     if(isThisWall(right_us)){
       turn(90,0);
       drop_kit(1);
@@ -36,7 +26,7 @@ void CheckForVicimsAndDropKits(){
       turn(90,1);
       return ;
     }
-  }*/
+  }
   return;
 }
 

@@ -28,6 +28,9 @@ float GetIrHeatleft(int w=0x07){//Check the readme for a des.
 }
 
 float getCompHeading(){
+   if (mag.testConnection()==false){
+     return 370;
+   }
    /* To calculate heading in degrees. 0 degree indicates North */
    int16_t mx, my, mz;
    mag.getHeading(&mx, &my, &mz);
@@ -38,6 +41,9 @@ float getCompHeading(){
 }
 
 float GetAlt(){
+  if (bmp==false){
+    return 0;
+  }
   float temp,p,a;
   bmp085Measure(&temp,&p,&a);
   return a;
@@ -48,6 +54,9 @@ int GetDist(NewPing sonarN){
 }
 
 int16_t GetAccXpY(){
+  if (accc.testConnection()==false){
+    return 0;
+  }
   return accc.getAccelerationX();//+accc.getAccelerationY();
 } 
 void sensorDebug(){
