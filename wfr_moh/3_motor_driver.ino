@@ -1,8 +1,11 @@
-void turn(int dc,bool pos){
+void turn(int dc,bool pos){ // todo:fall back on delays
   //pos=1 turns to the right
   int c;
   int CcompHeading;
   CcompHeading=getCompHeading();
+  if (CcompHeading==370){
+    return;
+  }
   if (pos){
     c=CcompHeading+dc;
     if (c>360){
@@ -17,6 +20,7 @@ while(isNotWithinRange(3,c,getCompHeading())){
   }else{
     turn_left();
   }
+  checkForimpTimeStuff();
 }
 }
 void setSpeeds(int fleft_s ,int fright_s ,int bleft_s , int bright_s ){
@@ -39,6 +43,7 @@ void drive_forward(){
   fright.run(FORWARD);
   bleft.run(FORWARD);
   bright.run(FORWARD);  
+  checkForimpTimeStuff();
 }
 
 void drive_backward(){
@@ -47,6 +52,7 @@ void drive_backward(){
   fright.run(BACKWARD);
   bleft.run(BACKWARD);
   bright.run(BACKWARD);
+  checkForimpTimeStuff();
 }
 
 void turn_left(){
@@ -55,6 +61,7 @@ void turn_left(){
   fright.run(FORWARD);
   bleft.run(BACKWARD);
   bright.run(FORWARD);
+  checkForimpTimeStuff();
 }
 
 void turn_right(){
@@ -64,6 +71,7 @@ void turn_right(){
   fright.run(BACKWARD);
   bleft.run(FORWARD);
   bright.run(BACKWARD);
+  checkForimpTimeStuff();
 }
 
 void drop_kit(int nKits=1){

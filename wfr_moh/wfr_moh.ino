@@ -9,25 +9,28 @@
 #include "bmp085.h"
 #include "I2Cdev.h"
 #include "MPU6050.h"
-#include "TimerOne.h"
 
 //Left Sensor connected to A8,A9
 //Right Sensor connected to Digital pins 20,21
 SoftwareWire Wire2( A4, A5);// SDA,SCL
 
-MPU6050 accc ;
+MPU6050 accc;
 HMC5883L mag;
+bool bmp;
 
 Servo deploy_servo;
 Servo cam;
+float StartwallTemp;
 volatile int accelReadings[10];
 volatile int base_accelReadings[10];
 volatile int accelReadings_curInd;
-bool gotoVic;
+bool gotoVic=0;
+bool enableTimesuff=1; //enables TimerOne CheckForVicimsAndDropKits() Interrupt also needed for LOPD
 bool StartCheckingForVics; //if set to one will start using CheckForVicimsAndDropKits every 0.5 Seconds
 volatile bool VizvictimIsDetected;
 volatile int cpos=4; //contains current position of the cam Servo,2=right,0=left,1=Forward
 volatile int vtype=4; //contains the Viz victims type,2=H,0=U,1=S
+volatile unsigned long previousMillisCheckForImpTStuff = 0;        // will store last time LED was updated
 
 #define LED_PIN 13 //change Me 
 #define max_dist 400
@@ -71,55 +74,43 @@ void setup(){
   attachInterrupt(digitalPinToInterrupt(19), VizVictimINT, CHANGE);
   attachInterrupt(digitalPinToInterrupt(15), Pause, CHANGE);
   attachInterrupt(digitalPinToInterrupt(14), resetFunc, CHANGE);
-  Timer1.initialize(500000); // in uS
-  Timer1.attachInterrupt(CheckForVicimsAndDropKits); // run 2 times every  seconds 
-  //---           ---
-  //   \_(*)_(*)_/ IDK
-  //using noInterrupts(); to disable INTs actually causes some arduino Funcs that use millis(); to not function ,and it somehow affects the USB Serial
-  
+
   Wire.begin(); 
   Wire2.begin(); 
   Serial.begin(9600);
 
-  Serial.println("Setting Up 10DOF sensors");
-  accc.initialize(); //see README
-  accc.setI2CBypassEnabled(true);
-  bmp085Init(0);    // Set Baseline @ sea level	
-  mag.initialize();
-  mag.setDataRate(5);
-  Serial.println("10DOF Ready");
-	Serial.println("Gathring Data for LOPD system");
-  int i=0;
-  for (i;i<10;i++){
-    base_accelReadings[accelReadings_curInd]=GetAccXpY(); //TODO:make me more fancy with 2D arrays
-    if (accelReadings_curInd<10){
-     accelReadings_curInd++;
-    }else if(accelReadings_curInd==10){
-     accelReadings_curInd=0;
-   }
-   delay(500);
+  Wire.beginTransmission(0x77);
+  int error = Wire.endTransmission();
+  if  (error==0){
+    Serial.println("Setting Up 10DOF sensors");
+    accc.initialize(); //see README
+    accc.setI2CBypassEnabled(true);
+    bmp085Init(0);    // Set Baseline @ sea level	
+    mag.initialize();
+    mag.setDataRate(50);
+    Serial.println("10DOF Ready");
+	  Serial.println("Gathring Data for LOPD system");
+    runLOPD();
+  }else{
+    bmp=false;
+    Serial.println("10DOF Not detected at 0x77");
   }
-  accelReadings_curInd=0;
-
-  setSpeeds(speed_default,speed_default,
-      speed_default,speed_default);
-	
   Serial.println("Ready ...");
   while(digitalRead(A11)==1){delay(50);}
   Serial.println("Starting...");
-  StartCheckingForVics=1;
+  StartCheckingForVics=enableTimesuff;
   delay(1000);
 }
 
 void loop(){
-  turn(90,1);
-  delay(1000);
+  Serial.println("LOOP");
+  //turn(90,1);
+  //delay(1000);
   drive_forward();
-  delay(3000);
-  turn(90,0);
-  while (true){}
+  //delay(3000);
+  //turn(90,0);
 }
-void p(){//each iteration should take up a tile TODO::
+void p(){
   //right wall follower 
       while(GetDist(center_us)>15){
           drive_forward();
