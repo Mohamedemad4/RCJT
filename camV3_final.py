@@ -1,11 +1,12 @@
 import logging as log
+import os
 import sys
 import cv2
 import time
 import tesserocr
 from tesserocr import PyTessBaseAPI
 import wiringpi
-
+from USBSwitching import turnthemAlloff,turnPortOn 
 log.basicConfig(filename="vvd.log")
 
 wiringpi.wiringPiSetupGpio()
@@ -32,9 +33,9 @@ def capture(camPos):
         dst = cv2.warpAffine(readCam[1],M,(cols,rows))
 
         print(readCam[0])
-        cv2.imwrite("tmp.png",dst)
+        cv2.imwrite("tmp{0}.png".format(camPos),dst)
         api.SetPageSegMode(tesserocr.PSM.SINGLE_CHAR)
-        api.SetImageFile("tmp.png")
+        api.SetImageFile("tmp{0}.png".format(camPos))
         return (api.GetUTF8Text(),api.AllWordConfidences())
 
 def setReadPos(i):
@@ -53,6 +54,7 @@ def setReadPos(i):
 def SendFoundSignal(ca):
     try:
         c=ca[0][0].upper() # change THIS and set a min confidence thresh
+        print(c[0][1])
     except:
         c="NADA"
     if c=="H":
@@ -74,6 +76,18 @@ def SendFoundSignal(ca):
         wiringpi.digitalWrite(20,0)
     wiringpi.digitalWrite(16,1)
     return True
+
+
+print("after Boot")
+print(os.popen("lsusb -t").read())
+turnthemAlloff()
+print("after they are off")
+print(os.popen("lsusb -t").read())
+turnPortOn(4)
+turnPortOn(3)
+turnPortOn(5)
+print("after switches")
+print(os.popen("lsusb -t").read())
 
 with PyTessBaseAPI() as api:
     while True:
