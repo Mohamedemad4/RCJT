@@ -19,13 +19,13 @@ HMC5883L mag;
 bool bmp;
 
 Servo deploy_servo;
-  
+
 float StartwallTemp;
 volatile int accelReadings[10];
 volatile int base_accelReadings[10];
 volatile int accelReadings_curInd;
 bool gotoVic=0;
-bool enableTimesuff=1; //enables TimerOne CheckForVicimsAndDropKits() Interrupt also needed for LOPD
+bool enableTimesuff=1; //enables TimerOne CheckForVicimsAndDropKits() Interrupt also needed for LOPD ,Use me instead of setting StartCheckingForVics 
 bool StartCheckingForVics; //if set to one will start using CheckForVicimsAndDropKits every 0.5 Seconds
 volatile bool VizvictimIsDetected;
 volatile int cpos=4; //contains current position of the cam Servo,2=right,0=left,1=Forward
@@ -41,6 +41,10 @@ NewPing center_us(A1,A1,max_dist);
 NewPing right_us(A2,A2,max_dist);
 
 void(* resetFunc) (void) = 0; //declare reset function @ address 0,crash the machine
+void DEBUG(const char* msg){
+  Serial.println(msg);
+  Serial1.println(msg);
+}
 void setup(){  
   //Push Button
   pinMode(A11,INPUT_PULLUP);
@@ -71,32 +75,33 @@ void setup(){
   Wire.begin(); 
   Wire2.begin(); 
   Serial.begin(9600);
+  Serial1.begin(9600);
 
   Wire.beginTransmission(0x77);
   int error = Wire.endTransmission();
   if  (error==0){
-    Serial.println("Setting Up 10DOF sensors");
+    DEBUG("Setting Up 10DOF sensors");
     accc.initialize(); //see README
     accc.setI2CBypassEnabled(true);
     bmp085Init(0);    // Set Baseline @ sea level	
     mag.initialize();
     mag.setDataRate(50);
-    Serial.println("10DOF Ready");
-	  Serial.println("Gathring Data for LOPD system");
+    DEBUG("10DOF Ready");
+	  DEBUG("Gathring Data for LOPD system");
     runLOPD();
   }else{
     bmp=false;
-    Serial.println("10DOF Not detected at 0x77");
+    DEBUG("10DOF Not detected at 0x77");
   }
-  Serial.println("Ready ...");
+  DEBUG("Ready ...");
   while(digitalRead(A11)==1){delay(50);}
-  Serial.println("Starting...");
+  DEBUG("Starting...");
   StartCheckingForVics=enableTimesuff;
   delay(1000);
 }
 
 void loop(){
-  Serial.println("LOOP");
+  DEBUG("LOOP");
   drive_forward();
  // rightWallfollower();
 }

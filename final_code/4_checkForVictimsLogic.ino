@@ -2,12 +2,14 @@ void CheckForVicimsAndDropKits(){
   if (StartCheckingForVics==0){
      return;
     }
-  if (VizvictimIsDetectsted==1){
+  if (VizvictimIsDetected==1){
     VizvictimIsDetected=0;       //confirm
+    DEBUG("VizvictimIsDetected");
     checkVizWallsandDropKits();
     return;
     }
   if (!isNotWithinRange(10,GetIrHeatleft(),40)){ //see if there is even anything
+     DEBUG("Heated VICTIM is in the left");
     if(isThisWall(left_us)){ //check walls
       turn(90,1);
       drop_kit(1);  
@@ -18,6 +20,7 @@ void CheckForVicimsAndDropKits(){
     }
   }
   if (!isNotWithinRange(10,GetIrHeatright(),40)){
+    DEBUG("Heated VICTIM is in the Right");
     if(isThisWall(right_us)){
       turn(90,0);
       drop_kit(1);
@@ -34,15 +37,19 @@ bool checkVizWallsandDropKits(){
   int nKits;
   if (vtype==2){ //H
       nKits=2;
+      DEBUG("Victim is an H");
   }
   if(vtype==1){ //S
     nKits=1;
+    DEBUG("Victim is an S");
   }
-  if(vtype==0){ //S
+  if(vtype==0){ //U
     nKits=0;
+    DEBUG("Victim is a U ");
   }
   if (cpos==1){
-      if(isThisWall(center_us)){
+      DEBUG("VICTIM is in the front");
+      if(isThisWall(center_us)){    
           turn(180,1);
           drop_kit(nKits);
           return 1;
@@ -53,6 +60,7 @@ bool checkVizWallsandDropKits(){
       }
     }
     else if (cpos==0){
+      DEBUG("Victim Is tot the left");
       if(isThisWall(left_us)){
           turn(90,1);
           drop_kit(nKits);
@@ -63,6 +71,7 @@ bool checkVizWallsandDropKits(){
       }
     }
     else if (cpos==2){
+      DEBUG("VICTIM is in the right");
       if(isThisWall(right_us)){
         turn(90,0);
         drop_kit(nKits);

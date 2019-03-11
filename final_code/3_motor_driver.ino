@@ -3,6 +3,7 @@ void turn(int dc,bool pos){ // todo:fall back on delays
   //remeber to keep scanning while turning since we somewhat depend on finding MLX victims while turning
   int c;
   int CcompHeading;
+  DEBUG("Turn");
   CcompHeading=getCompHeading();
   if (CcompHeading==370){
     return;
@@ -26,25 +27,31 @@ while(isNotWithinRange(3,c,getCompHeading())){
 }
 
 void motor_stop(){
+  DEBUG("STOP");
 }
 
 void drive_forward(){
+  DEBUG("drive_forward");
   checkForimpTimeStuff();
 }
 
 void drive_backward(){
+  DEBUG("drive_backward");
   checkForimpTimeStuff();
 }
 
 void turn_left(){
+  DEBUG("turn_left");
   checkForimpTimeStuff();
 }
 
 void turn_right(){
+  DEBUG("turn_right");
   checkForimpTimeStuff();
 }
 
 void drop_kit(int nKits=1){
+    DEBUG("drop_kit");
     motor_stop();
     StartCheckingForVics=0;
     int i;

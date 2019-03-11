@@ -1,5 +1,6 @@
 void Pause(){
   noInterrupts();
+  DEBUG("PAUSE");
   while(digitalRead(A11)==1){delay(50);}
   interrupts();
 }
@@ -8,7 +9,7 @@ void SeeIfLOP(){
   int SomearbRange=10;
   //for now we are using avrgs//deal with it 
   if (isNotWithinRange(SomearbRange,average(base_accelReadings,10),average(accelReadings,10))){
-    Serial.println("LOP");
+    DEBUG("LOPD");
   }
 }
 bool isNotWithinRange(int range,int l1,int l2){
@@ -38,17 +39,17 @@ void VizVictimINT(){
     if (digitalRead(22)==1 && digitalRead(23)==1){
     }
     if (digitalRead(22)==1 &&digitalRead(23)==0){
-        Serial.println("H");
+        DEBUG("H");
         vtype=2;
         VizvictimIsDetected=1;
     }
     if (digitalRead(22)==0 && digitalRead(23)==1){
-        Serial.println("U");   
+        DEBUG("U");   
         vtype=0;
         VizvictimIsDetected=1;
     }
     if (digitalRead(22)==0 && digitalRead(23)==0){
-        Serial.println("S");
+        DEBUG("S");
         vtype=1;
         VizvictimIsDetected=1;
     }
@@ -58,15 +59,15 @@ void vicLocINT(){
     if (digitalRead(22)==1 && digitalRead(23)==1){
     }
     if (digitalRead(22)==1 &&digitalRead(23)==0){
-        Serial.println("Right");
+        DEBUG("Right");
         cpos=2;
     }
     if (digitalRead(22)==0 && digitalRead(23)==1){
-        Serial.println("left");   
+        DEBUG("left");   
         cpos=0;
     }
     if (digitalRead(22)==0 && digitalRead(23)==0){
-        Serial.println("Forward");
+        DEBUG("Forward");
         cpos=1;
     }
 }
@@ -101,6 +102,7 @@ void checkForimpTimeStuff(){
   unsigned long currentMillis = millis();
   if (currentMillis - previousMillisCheckForImpTStuff >= 500 && StartCheckingForVics) {//is True every 0.5S
     previousMillisCheckForImpTStuff = currentMillis;
+    DEBUG("checkForimpTimeStuff()");
     checkForLOPD();
     CheckForVicimsAndDropKits();
   }
