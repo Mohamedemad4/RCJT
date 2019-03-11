@@ -6,6 +6,7 @@ import time
 import tesserocr
 from tesserocr import PyTessBaseAPI
 import wiringpi
+from multiprocessing import Pool
 from USBSwitching import turnthemAlloff,turnPortOn 
 log.basicConfig(filename="vvd.log")
 
@@ -80,20 +81,22 @@ def SendFoundSignal(ca):
 
 print("after Boot")
 print(os.popen("lsusb -t").read())
-turnthemAlloff()
+#turnthemAlloff()
 print("after they are off")
 print(os.popen("lsusb -t").read())
-turnPortOn(4)
-turnPortOn(3)
-turnPortOn(5)
+#turnPortOn(4)
+#turnPortOn(3)
+#turnPortOn(5)
 print("after switches")
 print(os.popen("lsusb -t").read())
 
+def run_process(i):
+    t=time.time()
+    setReadPos(i)
+    SendFoundSignal(capture(i))
+    print(time.time()-t)
+
 with PyTessBaseAPI() as api:
     while True:
-        for i in [0,1,2]:
-           t=time.time()
-           setReadPos(i)
-           SendFoundSignal(capture(i))
-           print(time.time()-t)
-
+        p=Pool(3)
+        p.map(run_process,[0,1,2])

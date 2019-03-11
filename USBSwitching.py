@@ -30,9 +30,3 @@ def turnPortOn(port):
     else:
         return turnPortOn(port) #unregulated tail recurssion FTW
 
-print(os.popen("lsusb -t").read())
-turnthemAlloff()
-turnPortOn(4)   
-turnPortOn(3)
-turnPortOn(5)
-print(os.popen("lsusb -t").read())
