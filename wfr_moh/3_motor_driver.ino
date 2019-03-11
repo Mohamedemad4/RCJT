@@ -1,5 +1,6 @@
 void turn(int dc,bool pos){ // todo:fall back on delays
   //pos=1 turns to the right
+  //remeber to keep scanning while turning since we somewhat depend on finding MLX victims while turning
   int c;
   int CcompHeading;
   CcompHeading=getCompHeading();
@@ -98,22 +99,3 @@ void drop_kit(int nKits=1){
    StartCheckingForVics=1;// imagine how hillarouis that rec would look
 }
 
-void ServoINT(){
-    if (digitalRead(22)==1 && digitalRead(23)==1){
-    }
-    if (digitalRead(22)==1 &&digitalRead(23)==0){
-        Serial.println("Right");
-        cpos=2;
-        cam.write(160);
-    }
-    if (digitalRead(22)==0 && digitalRead(23)==1){
-        Serial.println("left");   
-        cpos=0;
-        cam.write(20);
-    }
-    if (digitalRead(22)==0 && digitalRead(23)==0){
-        Serial.println("Forward");
-        cpos=1;
-        cam.write(90);
-    }
-}

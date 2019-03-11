@@ -53,6 +53,24 @@ void VizVictimINT(){
         VizvictimIsDetected=1;
     }
 }
+
+void vicLocINT(){
+    if (digitalRead(22)==1 && digitalRead(23)==1){
+    }
+    if (digitalRead(22)==1 &&digitalRead(23)==0){
+        Serial.println("Right");
+        cpos=2;
+    }
+    if (digitalRead(22)==0 && digitalRead(23)==1){
+        Serial.println("left");   
+        cpos=0;
+    }
+    if (digitalRead(22)==0 && digitalRead(23)==0){
+        Serial.println("Forward");
+        cpos=1;
+    }
+}
+
 void checkForLOPD(){
   if (accc.testConnection()==true){
     accelReadings[accelReadings_curInd]=GetAccXpY();
@@ -81,7 +99,7 @@ void runLOPD(){
 
 void checkForimpTimeStuff(){
   unsigned long currentMillis = millis();
-  if (currentMillis - previousMillisCheckForImpTStuff >= 500) {//is True every 0.5S
+  if (currentMillis - previousMillisCheckForImpTStuff >= 500 && StartCheckingForVics) {//is True every 0.5S
     previousMillisCheckForImpTStuff = currentMillis;
     checkForLOPD();
     CheckForVicimsAndDropKits();
