@@ -17,12 +17,16 @@ wiringpi.pinMode(20, wiringpi.GPIO.OUTPUT) # Servo
 wiringpi.digitalWrite(16,1)
 wiringpi.digitalWrite(12,1)
 
-cam=cv2.VideoCapture(0)
 
-
-def capture():
+def capture(camPos):
+        if camPos==0:
+            cam=cv2.VideoCapture(0)
+        if camPos==1:
+            cam=cv2.VideoCapture(1)
+        if camPos==2:
+            cam=cv2.VideoCapture(2)
         readCam=cam.read()
-
+        cam.release()
         rows,cols,_=readCam[1].shape
         M = cv2.getRotationMatrix2D((cols/2,rows/2),90,1)
         dst = cv2.warpAffine(readCam[1],M,(cols,rows))
@@ -33,27 +37,18 @@ def capture():
         api.SetImageFile("tmp.png")
         return (api.GetUTF8Text(),api.AllWordConfidences())
 
-def setServo(i):
-    wiringpi.digitalWrite(12,0);
-    if i==0:
+def setReadPos(i):
+    wiringpi.digitalWrite(12,0)
+    if i==0: #left
         wiringpi.digitalWrite(21,0)
-        wiringpi.digitalWrite(21,1)
-        time.sleep(0.01)
-        wiringpi.digitalWrite(21,1)
         wiringpi.digitalWrite(20,1)
-    elif i==1:
+    elif i==1: #right
+        wiringpi.digitalWrite(21,1)
         wiringpi.digitalWrite(20,0)
-        wiringpi.digitalWrite(20,1)
-        time.sleep(0.01)
-        wiringpi.digitalWrite(21,1)
-        wiringpi.digitalWrite(20,1)
-    elif i==2:
+    elif i==2: #forward
         wiringpi.digitalWrite(21,0)
         wiringpi.digitalWrite(20,0)
-        time.sleep(0.01)
-        wiringpi.digitalWrite(21,1)
-        wiringpi.digitalWrite(20,1)
-    wiringpi.digitalWrite(  12,1)
+    wiringpi.digitalWrite(12,1)
 
 def SendFoundSignal(ca):
     try:
@@ -84,8 +79,7 @@ with PyTessBaseAPI() as api:
     while True:
         for i in [0,1,2]:
            t=time.time()
-           setServo(i)
-           time.sleep(1)
-           SendFoundSignal(capture())
+           setReadPos(i)
+           SendFoundSignal(capture(i))
            print(time.time()-t)
 
