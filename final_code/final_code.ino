@@ -19,7 +19,7 @@ HMC5883L mag;
 bool bmp;
 
 Servo deploy_servo;
-
+  
 float StartwallTemp;
 volatile int accelReadings[10];
 volatile int base_accelReadings[10];
