@@ -24,54 +24,23 @@ while(isNotWithinRange(3,c,getCompHeading())){
   checkForimpTimeStuff();
 }
 }
-void setSpeeds(int fleft_s ,int fright_s ,int bleft_s , int bright_s ){
-  fleft.setSpeed(fleft_s);
-  fright.setSpeed(fright_s);
-  bleft.setSpeed(bleft_s);
-  bright.setSpeed(bright_s);
- }
- 
+
 void motor_stop(){
-  fleft.run(RELEASE);
-  fright.run(RELEASE);
-  bleft.run(RELEASE);
-  bright.run(RELEASE);
 }
 
 void drive_forward(){
-    setSpeeds(speed_default,speed_default, speed_default,speed_default);
-  fleft.run(FORWARD);
-  fright.run(FORWARD);
-  bleft.run(FORWARD);
-  bright.run(FORWARD);  
   checkForimpTimeStuff();
 }
 
 void drive_backward(){
-    setSpeeds(speed_max,speed_max,speed_max,speed_max);
-  fleft.run(BACKWARD);
-  fright.run(BACKWARD);
-  bleft.run(BACKWARD);
-  bright.run(BACKWARD);
   checkForimpTimeStuff();
 }
 
 void turn_left(){
-  setSpeeds(speed_max,speed_max,speed_max,speed_max);
-  fleft.run(BACKWARD);
-  fright.run(FORWARD);
-  bleft.run(BACKWARD);
-  bright.run(FORWARD);
   checkForimpTimeStuff();
 }
 
 void turn_right(){
-  setSpeeds(speed_max,speed_max,
-      speed_max,speed_max);
-  fleft.run(FORWARD);
-  fright.run(BACKWARD);
-  bleft.run(FORWARD);
-  bright.run(BACKWARD);
   checkForimpTimeStuff();
 }
 

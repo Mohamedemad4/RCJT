@@ -39,7 +39,7 @@ void rightWallfollower(){
               delay(50);
             }
             
-            if(digitalRead(A3)==1){//if a trap is found 
+            if(digitalRead(IR_Sensor_PIN)==1){//if a trap is found 
               motor_stop();
               delay(200);
               drive_backward();

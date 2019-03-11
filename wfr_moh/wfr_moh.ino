@@ -19,7 +19,7 @@ HMC5883L mag;
 bool bmp;
 
 Servo deploy_servo;
-Servo cam;
+
 float StartwallTemp;
 volatile int accelReadings[10];
 volatile int base_accelReadings[10];
@@ -32,19 +32,13 @@ volatile int cpos=4; //contains current position of the cam Servo,2=right,0=left
 volatile int vtype=4; //contains the Viz victims type,2=H,0=U,1=S
 volatile unsigned long previousMillisCheckForImpTStuff = 0;        // will store last time LED was updated
 
+#define IR_Sensor_PIN A3
 #define LED_PIN 13 //change Me 
 #define max_dist 400
-#define speed_default 255//100
-#define speed_max 155
+
 NewPing left_us(A0,A0,max_dist);
 NewPing center_us(A1,A1,max_dist);
 NewPing right_us(A2,A2,max_dist);
-
-AF_DCMotor fleft(2, MOTOR12_1KHZ); 	
-AF_DCMotor fright(1, MOTOR12_1KHZ);
-
-AF_DCMotor bleft(3, MOTOR34_1KHZ); 
-AF_DCMotor bright(4, MOTOR34_1KHZ); 
 
 void(* resetFunc) (void) = 0; //declare reset function @ address 0,crash the machine
 void setup(){  
@@ -53,14 +47,13 @@ void setup(){
   pinMode(A10,1);
 
   //IR Color Sensor
-  pinMode(A3, INPUT);
+  pinMode(IR_Sensor_PIN, INPUT);
 
   deploy_servo.attach(10);
   deploy_servo.write(130);
   
   digitalWrite(A10,0);
   
-  cam.attach(9);
   // for the 2 Digital comm pins
   pinMode(22,INPUT_PULLUP); 
   pinMode(23,INPUT_PULLUP);
