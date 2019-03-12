@@ -2,7 +2,62 @@ void turn(int dc,bool pos){ // todo:fall back on delays
   //pos=1 turns to the right
   //remeber to keep scanning while turning since we somewhat depend on finding MLX victims while turning
   DEBUG("Turn");
-  if (pos==1){
+  if(mag.testConnection() && ONaVictimStile==0){ //electromagnitc interference from HVs
+    int c_status=compass_based_turn(dc,pos);
+    if (c_status==0){
+      delay_based_turn(dc,pos);
+    }
+  }else{
+    delay_based_turn(dc,pos);
+  }
+}
+
+bool compass_based_turn(int dc,bool pos){
+  int c;
+  int CcompHeading;
+  CcompHeading=getCompHeading();
+  if (CcompHeading==370){
+    return;
+  }
+  if (pos){
+    c=CcompHeading+dc;
+    if (c>360){
+      c=c-360;
+    }
+  }else{
+    c=fabs(CcompHeading-dc);
+  }
+  DEBUG("compass_based_turn");
+  DEBUG_INT(pos);
+  DEBUG_INT(dc);
+  gotoVic=0; //so it doesn't execute turn() while turning,and can still scan for HVs (discuss)
+  unsigned long start = millis();
+  while(isNotWithinRange(3,c,getCompHeading())){
+    if (pos){
+      turn_right();
+    }else{
+      turn_left();
+    }
+    if((millis()-start)>500){ //give it 500Ms to work
+      if (pos){
+        turn_right();
+        delay(500); //reset POS
+      }else{
+        turn_left();
+        delay(500);
+      }
+      return 0;
+    }
+    checkForimpTimeStuff();
+  }
+  return 1;
+}
+
+void delay_based_turn(int dc,bool pos){
+    DEBUG("delay_based_turn");
+    DEBUG_INT(pos);
+    DEBUG_INT(dc);
+    if (pos==1){
     if (dc==180){
       turn_45_to_the_right_wheels();
       turn_45_to_the_right_wheels();
