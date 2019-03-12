@@ -56,6 +56,8 @@ def SendFoundSignal(ca):
     try:
         c=ca[0][0].upper() # change THIS and set a min confidence thresh
         print(c[0][1])
+        if (c[0][1]>3)==False: #min_thresh
+            c="NADA"
     except:
         c="NADA"
     if c=="H":
@@ -81,12 +83,12 @@ def SendFoundSignal(ca):
 
 print("after Boot")
 print(os.popen("lsusb -t").read())
-#turnthemAlloff()
+turnthemAlloff()
 print("after they are off")
 print(os.popen("lsusb -t").read())
-#turnPortOn(4)
-#turnPortOn(3)
-#turnPortOn(5)
+turnPortOn(4)
+turnPortOn(3)
+turnPortOn(5)
 print("after switches")
 print(os.popen("lsusb -t").read())
 
