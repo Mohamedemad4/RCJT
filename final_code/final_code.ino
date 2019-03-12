@@ -29,8 +29,13 @@ bool StartCheckingForVics; //if set to one will start using CheckForVicimsAndDro
 volatile bool VizvictimIsDetected;
 volatile int cpos=4; //contains current position of the cam Servo,2=right,0=left,1=Forward
 volatile int vtype=4; //contains the Viz victims type,2=H,0=U,1=S
-volatile unsigned long previousMillisCheckForImpTStuff = 0;        // will store last time LED was updated
+volatile unsigned long previousMillisCheckForImpTStuff = 0;
 
+volatile int orientatation=0; // 0 N , 1 E , 2 S , 3 W,assume f from starting pos = N
+volatile bool ONaVictimStile;
+volatile bool ONaTrapStile;
+
+volatile int array [30][30];
 #define IR_Sensor_PIN A3
 #define LED_PIN 13 //change Me 
 #define max_dist 400
