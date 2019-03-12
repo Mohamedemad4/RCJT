@@ -171,3 +171,33 @@ void drop_kit(int nKits=1){
    StartCheckingForVics=1;// imagine how hillarouis that rec would look
 }
 
+void trap_cond(){
+    if(digitalRead(IR_Sensor_PIN)==1){//if a trap is found 
+      motor_stop();
+      delay(200);
+      drive_backward();
+      delay(300);
+      turn(180,1);
+      if(GetDist(left_us)>GetDist(right_us)){//turn left if left is greater than right
+        turn(90,0);
+        }
+      else if(GetDist(left_us)<GetDist(right_us)){//turn right if right is greater than left
+        turn(90,1);
+        }
+      }
+}
+
+void align_and_emergency(){
+   if(GetDist(center_us)<=7 && GetDist(right_us)<=7 && GetDist(left_us)<=7){  //emergyncy if the robot was traped in a 3 walled tile 
+     turn(180,0);
+   }
+     //!!!dont forget to calibrate the delay  in the maze!!!
+   while(GetDist(right_us)<=7){//aligment right
+       turn_left();
+       delay(50);
+     }
+     while(GetDist(left_us)<=7){//aligment left
+       turn_right();
+       delay(50);
+     }
+}
