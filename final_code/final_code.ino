@@ -2,7 +2,6 @@
 #include <Servo.h>
 #include <math.h>
 
-#include "AFMotor.h"
 #include "NewPing.h"
 #include "SoftwareWire.h"
 #include "HMC5883L.h"
@@ -36,9 +35,19 @@ volatile unsigned long previousMillisCheckForImpTStuff = 0;        // will store
 #define LED_PIN 13 //change Me 
 #define max_dist 400
 
+#define SERVO_45_DELAY 65
+#define SERVO_SPEED_FOR 180
+#define SERVO_SPEED_BACK 0
+#define SERVO_STOP_VAL 90
+
 NewPing left_us(A0,A0,max_dist);
 NewPing center_us(A1,A1,max_dist);
 NewPing right_us(A2,A2,max_dist);
+
+Servo fright;
+Servo fleft;
+Servo bright;
+Servo bleft;
 
 void(* resetFunc) (void) = 0; //declare reset function @ address 0,crash the machine
 void DEBUG(const char* msg){
@@ -53,7 +62,12 @@ void setup(){
   //IR Color Sensor
   pinMode(IR_Sensor_PIN, INPUT);
 
-  deploy_servo.attach(10);
+  fright.attach(13);
+  fleft.attach(10);
+  bright.attach(11);
+  bleft.attach(12);
+
+  deploy_servo.attach(9);
   deploy_servo.write(130);
   
   digitalWrite(A10,0);
@@ -102,6 +116,5 @@ void setup(){
 
 void loop(){
   DEBUG("LOOP");
-  drive_forward();
- // rightWallfollower();
+  rightWallfollower();
 }
