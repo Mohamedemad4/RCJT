@@ -1,7 +1,8 @@
 int count_tiles(NewPing Sonar){
     //doesn't count the tile we are on
     int distance=GetDist(Sonar);
-    for (int i=0;distance=<30;i++){
+    int i=0;
+    for (;distance<=30;i++){
         distance=distance-30;
     }
     DEBUG_RAW("Tiles on Sonar are: ");

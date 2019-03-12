@@ -17,7 +17,7 @@ bool compass_based_turn(int dc,bool pos){
   int CcompHeading;
   CcompHeading=getCompHeading();
   if (CcompHeading==370){
-    return;
+    return 0;
   }
   if (pos){
     c=CcompHeading+dc;

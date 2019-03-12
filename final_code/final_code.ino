@@ -35,7 +35,11 @@ volatile int orientatation=0; // 0 N , 1 E , 2 S , 3 W,assume f from starting po
 volatile bool ONaVictimStile;
 volatile bool ONaTrapStile;
 
-volatile int array [30][30];
+/*
+0=Tile,1=Wall,2=VictimTile,3=Trap Tile
+*/
+volatile int the_motherfucking_maze [40][40]={{1}};
+
 #define IR_Sensor_PIN A3
 #define LED_PIN 13 //change Me 
 #define max_dist 400

@@ -113,6 +113,6 @@ void DEBUG_RAW(const char* msg){
 }
 
 void DEBUG_INT(unsigned long int intMsg){
-  Serial.printNumber(intMsg);
-  Serial1.printNumber(intMsg);  
+  Serial.println(intMsg);
+  Serial1.println(intMsg);  
 }
