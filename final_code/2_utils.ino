@@ -85,8 +85,7 @@ void checkForLOPD(){
 }
 
 void runLOPD(){
-  int i=0;
-  for (i;i<10;i++){
+  for (int i=0;i<10;i++){
     base_accelReadings[accelReadings_curInd]=GetAccXpY(); //TODO:make me more fancy with 2D arrays
     if (accelReadings_curInd<10){
      accelReadings_curInd++;
@@ -106,4 +105,14 @@ void checkForimpTimeStuff(){
     checkForLOPD();
     CheckForVicimsAndDropKits();
   }
+}
+
+void DEBUG_RAW(const char* msg){
+  Serial.print(msg);
+  Serial1.print(msg);
+}
+
+void DEBUG_INT(unsigned long int intMsg){
+  Serial.printNumber(intMsg);
+  Serial1.printNumber(intMsg);  
 }
