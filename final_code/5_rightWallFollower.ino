@@ -1,7 +1,7 @@
 void rightWallfollower(){
   //right wall follower 
       while(GetDist(center_us)>15){
-          drive_forward();
+        drive_forward();
         }
  
           //!!!dont forget to calibrate the us_  in the maze!!!

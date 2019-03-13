@@ -6,7 +6,11 @@ int count_tiles(NewPing Sonar){
         distance=distance-30;
     }
     DEBUG_RAW("Tiles on Sonar are: ");
-    if (distance==0){
+    if(isThisWall(Sonar)){
+        DEBUG_INT(0);
+        return 0;
+    }
+    if (distance<7){
         DEBUG_INT(i);
         return i;
     }
@@ -15,7 +19,7 @@ int count_tiles(NewPing Sonar){
 }
 
 void adjust_orient(int pos){
-    //pos=1 right
+    //pos=1 right   
     if (orientatation==0 && pos==1){
         orientatation=1; 
     }
@@ -46,3 +50,14 @@ void adjust_orient(int pos){
     DEBUG_INT(orientatation);
 }
 
+void PrintMatrix()
+{
+   DEBUG("Printing Matrix On Serial");
+   for (int i = 0; i < 40; i++) {
+       for (int j = 0; j < 40; j++) {
+           Serial.print("  ");Serial.print(grid_matrix[i][j], DEC);
+       }
+       Serial.println();
+   }
+   Serial.println();
+}

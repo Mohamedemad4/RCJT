@@ -35,10 +35,13 @@ volatile int orientatation=0; // 0 N , 1 E , 2 S , 3 W,assume f from starting po
 volatile bool ONaVictimStile;
 volatile bool ONaTrapStile;
 
+volatile int posX=10;// assume 0,0 on start position
+volatile int posY=10;
+
 /*
-0=Tile,1=Wall,2=VictimTile,3=Trap Tile
+0=Wall,1=unvistedTile,2=VictimTile,3=Trap Tile,4=visited tile
 */
-volatile int the_motherfucking_maze [40][40]={{1}};
+volatile int grid_matrix [40][40];
 
 #define IR_Sensor_PIN A3
 #define LED_PIN 13 //change Me 
@@ -78,7 +81,9 @@ void setup(){
 
   deploy_servo.attach(9);
   deploy_servo.write(130);
-  
+
+  grid_matrix[0][0]=1; //set the init position to zero,since we will always work from a corner
+    
   digitalWrite(A10,0);
   
   // for the 2 Digital comm pins
@@ -117,13 +122,15 @@ void setup(){
     DEBUG("10DOF Not detected at 0x77");
   }
   DEBUG("Ready ...");
-  while(digitalRead(A11)==1){delay(50);}
+  //while(digitalRead(A11)==1){delay(50);}
   DEBUG("Starting...");
-  StartCheckingForVics=enableTimesuff;
+  //StartCheckingForVics=enableTimesuff;
   delay(1000);
+  update_matrix();
+  PrintMatrix(); 
 }
 
 void loop(){
-  DEBUG("LOOP");
-  rightWallfollower();
+//  DEBUG("LOOP");
+//  rightWallfollower();
 }
