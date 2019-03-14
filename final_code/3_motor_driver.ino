@@ -108,6 +108,7 @@ void drive_one_tile(){
   drive_forward();
   delay(200); //to be configed
   motor_stop();
+  
 }
 void drive_forward(){
   DEBUG("drive_forward");

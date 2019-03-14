@@ -20,34 +20,34 @@ int count_tiles(NewPing Sonar){
 
 void adjust_orient(int pos){
     //pos=1 right   
-    if (orientatation==0 && pos==1){
-        orientatation=1; 
+    if (orientation==0 && pos==1){
+        orientation=1; 
     }
-    if (orientatation==0 && pos==0){
-        orientatation=2;
+    if (orientation==0 && pos==0){
+        orientation=2;
     }
-    if(orientatation==1 && pos==1){
-        orientatation=2;
+    if(orientation==1 && pos==1){
+        orientation=2;
     }
-    if(orientatation==1 && pos==0){
-        orientatation=0;
-    }
-
-    if(orientatation==2 && pos==0){
-        orientatation=3;
-    }
-    if(orientatation==2 && pos==1){
-        orientatation=1;
+    if(orientation==1 && pos==0){
+        orientation=0;
     }
 
-    if(orientatation==3 && pos==0){
-        orientatation=2;
+    if(orientation==2 && pos==0){
+        orientation=3;
     }
-    if(orientatation==3 && pos==1){
-        orientatation=0;
+    if(orientation==2 && pos==1){
+        orientation=1;
     }
-    DEBUG_RAW("CURRENT orientatation is: ");
-    DEBUG_INT(orientatation);
+
+    if(orientation==3 && pos==0){
+        orientation=2;
+    }
+    if(orientation==3 && pos==1){
+        orientation=0;
+    }
+    DEBUG_RAW("CURRENT orientation is: ");
+    DEBUG_INT(orientation);
 }
 
 void PrintMatrix()
@@ -67,24 +67,24 @@ void update_matrix(){
     int lt=count_tiles(left_us);
     int ct=count_tiles(center_us);
     int rt=count_tiles(right_us);
-    DEBUG_RAW("update_matrix() current orintation is: ");
-    DEBUG_INT(orintation);
-    if (orintation==0){
+    DEBUG_RAW("update_matrix() current orientation is: ");
+    DEBUG_INT(orientation);
+    if (orientation==0){
         append_to_matrix(lt,3);
         append_to_matrix(ct,0);
-        append_to_matrix(rt,1)
+        append_to_matrix(rt,1);
     }
-    if(orintation==1){
+    if(orientation==1){
         append_to_matrix(lt,0);
         append_to_matrix(ct,1);
         append_to_matrix(rt,2);
     }
-    if (orintation==2){
+    if (orientation==2){
         append_to_matrix(lt,1);
         append_to_matrix(ct,2);
         append_to_matrix(rt,3);
     }
-    if (orintation==3){
+    if (orientation==3){
         append_to_matrix(lt,2);
         append_to_matrix(ct,3);
         append_to_matrix(rt,0);
@@ -93,7 +93,7 @@ void update_matrix(){
 
 void append_to_matrix(int Ntiles,int ao){ 
     /*
-    ao represents the matrix's internal orintation variable
+    ao represents the matrix's internal orientation variable
     since you will want to append to certien directions relative to the start tile 
     it follows the same logic ,0=F,1=R,2=B,3=L 
     */

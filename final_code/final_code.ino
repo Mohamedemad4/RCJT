@@ -31,7 +31,7 @@ volatile int cpos=4; //contains current position of the cam Servo,2=right,0=left
 volatile int vtype=4; //contains the Viz victims type,2=H,0=U,1=S
 volatile unsigned long previousMillisCheckForImpTStuff = 0;
 
-volatile int orientatation=0; // 0 N , 1 E , 2 S , 3 W,assume f from starting pos = N
+volatile int orientation=0; // 0 N , 1 E , 2 S , 3 W,assume f from starting pos = N
 volatile bool ONaVictimStile;
 volatile bool ONaTrapStile;
 
@@ -76,10 +76,10 @@ void setup(){
 
   fright.attach(13);
   fleft.attach(10);
-  bright.attach(11);
+  bright.attach(9);
   bleft.attach(12);
 
-  deploy_servo.attach(9);
+  deploy_servo.attach(11);
   deploy_servo.write(130);
 
   grid_matrix[0][0]=1; //set the init position to zero,since we will always work from a corner
@@ -133,4 +133,6 @@ void setup(){
 void loop(){
 //  DEBUG("LOOP");
 //  rightWallfollower();
+sensorDebug();
+delay(1000);
 }
