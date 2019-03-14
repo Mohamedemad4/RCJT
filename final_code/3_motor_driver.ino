@@ -39,6 +39,7 @@ bool compass_based_turn(int dc,bool pos){
       turn_left();
     }
     if((millis()-start)>500){ //give it 500Ms to work
+    DEBUG("Took too long,reseting");
       if (pos){
         turn_right();
         delay(500); //reset POS
@@ -49,6 +50,14 @@ bool compass_based_turn(int dc,bool pos){
       return 0;
     }
     checkForimpTimeStuff();
+  }
+  DEBUG("adjusting Orintation");
+  if(dc==90){
+    adjust_orient(pos);
+  }
+  if (dc==180){
+    adjust_orient(pos);
+    adjust_orient(pos);
   }
   return 1;
 }
@@ -65,7 +74,6 @@ void delay_based_turn(int dc,bool pos){
       turn_45_to_the_right_wheels();
      }
      if (dc==90){
-      adjust_orient(1);
       turn_45_to_the_right_wheels();
       turn_45_to_the_right_wheels();
      }
@@ -78,10 +86,17 @@ void delay_based_turn(int dc,bool pos){
       turn_45_to_the_left_wheels();
      }
      if(dc==90){
-       adjust_orient(0);
        turn_45_to_the_left_wheels();
        turn_45_to_the_left_wheels();
     }
+  }
+  DEBUG("adjusting Orintation");
+  if(dc==90){
+    adjust_orient(pos);
+  }
+  if (dc==180){
+    adjust_orient(pos);
+    adjust_orient(pos);
   }
 }
 
