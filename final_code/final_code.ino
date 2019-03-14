@@ -32,9 +32,6 @@ volatile int vtype=4; //contains the Viz victims type,2=H,0=U,1=S
 volatile unsigned long previousMillisCheckForImpTStuff = 0;
 
 volatile int orientation=0; // 0 N , 1 E , 2 S , 3 W,assume f from starting pos = N
-volatile bool ONaVictimStile;
-volatile bool ONaTrapStile;
-
 volatile int posX=10;// assume 0,0 on start position
 volatile int posY=10;
 
