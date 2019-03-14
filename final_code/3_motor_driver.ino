@@ -2,7 +2,7 @@ void turn(int dc,bool pos){ // todo:fall back on delays
   //pos=1 turns to the right
   //remeber to keep scanning while turning since we somewhat depend on finding MLX victims while turning
   DEBUG("Turn");
-  if(mag.testConnection() && ONaVictimStile==0){ //electromagnitc interference from HVs
+  if(mag.testConnection()){ //electromagnitc interference from HVs
     int c_status=compass_based_turn(dc,pos);
     if (c_status==0){
       delay_based_turn(dc,pos);
@@ -170,7 +170,7 @@ void turn_right(){
 
 void drop_kit(int nKits=1){
     DEBUG("drop_kit");
-    ONaVictimStile=1;
+    append_to_matrix(posX,posY,2); //set current tile as a victims tile
     motor_stop();
     StartCheckingForVics=0;
     int i;
@@ -197,9 +197,8 @@ void drop_kit(int nKits=1){
 void trap_cond(){
     if(digitalRead(IR_Sensor_PIN)==1){//if a trap is found 
       motor_stop();
-      delay(200);
-      drive_backward();
-      delay(300);
+      append_to_matrix(posX,posY,3);
+      drive_one_tile_b();
       turn(180,1);
       if(GetDist(left_us)>GetDist(right_us)){//turn left if left is greater than right
         turn(90,0);
