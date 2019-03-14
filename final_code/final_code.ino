@@ -23,9 +23,6 @@ float StartwallTemp;
 volatile int accelReadings[10];
 volatile int base_accelReadings[10];
 volatile int accelReadings_curInd;
-bool gotoVic=0;
-bool enableTimesuff=1; //enables TimerOne CheckForVicimsAndDropKits() Interrupt also needed for LOPD ,Use me instead of setting StartCheckingForVics 
-bool StartCheckingForVics; //if set to one will start using CheckForVicimsAndDropKits every 0.5 Seconds
 volatile bool VizvictimIsDetected;
 volatile int cpos=4; //contains current position of the cam Servo,2=right,0=left,1=Forward
 volatile int vtype=4; //contains the Viz victims type,2=H,0=U,1=S
@@ -39,6 +36,8 @@ volatile int posY=10;
 0=Wall,1=unvistedTile,2=VictimTile,3=Trap Tile,4=visited tile
 */
 volatile int grid_matrix [40][40];
+#define enableTimesuff 1 //enables TimerOne CheckForVicimsAndDropKits() Interrupt also needed for LOPD ,Use me instead of setting StartCheckingForVics
+#define gotoVic 1 //enable going to victims on sight
 
 #define IR_Sensor_PIN A3
 #define LED_PIN 13 //change Me 
@@ -125,7 +124,7 @@ void setup(){
   //StartCheckingForVics=enableTimesuff;
   delay(1000);
   update_matrix();
-  PrintMatrix(); 
+//  PrintMatrix(); 
 }
 
 void loop(){

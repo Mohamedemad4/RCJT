@@ -97,6 +97,16 @@ void runLOPD(){
   accelReadings_curInd=0;
 }
 
+void check_start_tile(){
+  if(run_check_start_tile==10){
+    if(posX ==0 && posY==0){
+      motor_stop();
+      delay(10000);
+    }
+  }else{
+    run_check_start_tile++;
+  }
+}
 void checkForimpTimeStuff(){
   unsigned long currentMillis = millis();
   if (currentMillis - previousMillisCheckForImpTStuff >= 500 && StartCheckingForVics) {//is True every 0.5S
@@ -104,6 +114,7 @@ void checkForimpTimeStuff(){
     DEBUG("checkForimpTimeStuff()");
     checkForLOPD();
     CheckForVicimsAndDropKits();
+    check_start_tile();
   }
 }
 

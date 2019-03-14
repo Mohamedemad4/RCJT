@@ -60,7 +60,7 @@ bool checkVizWallsandDropKits(){
       }
     }
     else if (cpos==0){
-      DEBUG("Victim Is tot the left");
+      DEBUG("Victim Is to the left");
       if(isThisWall(left_us)){
           turn(90,1);
           drop_kit(nKits);
