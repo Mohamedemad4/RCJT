@@ -116,3 +116,57 @@ void DEBUG_INT(unsigned long int intMsg){
   Serial.println(intMsg);
   Serial1.println(intMsg);  
 }
+
+int count_tiles(NewPing Sonar){
+    //doesn't count the tile we are on
+    int distance=GetDist(Sonar);
+    int i=0;
+    for (;distance<=30;i++){
+        distance=distance-30;
+    }
+    DEBUG_RAW("Tiles on Sonar are: ");
+    if(isThisWall(Sonar)){
+        DEBUG_INT(0);
+        return 0;
+    }
+    if (distance<7){
+        DEBUG_INT(i);
+        return i;
+    }
+    DEBUG_INT(i+1);
+    return i+1;
+}
+
+void adjust_orient(int pos){
+    //pos=1 right   
+    DEBUG_RAW("Prev. orientation was ");
+    DEBUG_INT(orientation);
+    if (orientation==0 && pos==1){
+        orientation=1; 
+    }
+    if (orientation==0 && pos==0){
+        orientation=2;
+    }
+    if(orientation==1 && pos==1){
+        orientation=2;
+    }
+    if(orientation==1 && pos==0){
+        orientation=0;
+    }
+
+    if(orientation==2 && pos==0){
+        orientation=3;
+    }
+    if(orientation==2 && pos==1){
+        orientation=1;
+    }
+
+    if(orientation==3 && pos==0){
+        orientation=2;
+    }
+    if(orientation==3 && pos==1){
+        orientation=0;
+    }
+    DEBUG_RAW("CURRENT orientation is: ");
+    DEBUG_INT(orientation);
+}

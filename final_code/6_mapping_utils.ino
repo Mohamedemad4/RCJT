@@ -1,55 +1,3 @@
-int count_tiles(NewPing Sonar){
-    //doesn't count the tile we are on
-    int distance=GetDist(Sonar);
-    int i=0;
-    for (;distance<=30;i++){
-        distance=distance-30;
-    }
-    DEBUG_RAW("Tiles on Sonar are: ");
-    if(isThisWall(Sonar)){
-        DEBUG_INT(0);
-        return 0;
-    }
-    if (distance<7){
-        DEBUG_INT(i);
-        return i;
-    }
-    DEBUG_INT(i+1);
-    return i+1;
-}
-
-void adjust_orient(int pos){
-    //pos=1 right   
-    if (orientation==0 && pos==1){
-        orientation=1; 
-    }
-    if (orientation==0 && pos==0){
-        orientation=2;
-    }
-    if(orientation==1 && pos==1){
-        orientation=2;
-    }
-    if(orientation==1 && pos==0){
-        orientation=0;
-    }
-
-    if(orientation==2 && pos==0){
-        orientation=3;
-    }
-    if(orientation==2 && pos==1){
-        orientation=1;
-    }
-
-    if(orientation==3 && pos==0){
-        orientation=2;
-    }
-    if(orientation==3 && pos==1){
-        orientation=0;
-    }
-    DEBUG_RAW("CURRENT orientation is: ");
-    DEBUG_INT(orientation);
-}
-
 void PrintMatrix()
 {
    DEBUG("Printing Matrix On Serial");
@@ -90,6 +38,43 @@ void update_matrix(){
         append_to_matrix(rt,0);
     }
 } 
+void update_location(int case_up){
+    if (case_up==1){ //the robot moves one tile forward
+        if (orientation==0){
+            posX=posX+1;
+        }
+        if(orientation==1){
+            posY=posY+1;
+        }
+        if(orientation==2){
+            posX=posX-1;
+        }
+        if(orientation==3){
+            posY=posY-1;
+        }
+    }
+    if(case_up==2){ //the robot moves one tile backwards
+        if (orientation==0){
+            posX=posX-1;
+        }
+        if(orientation==1){
+            posY=posY-1;
+        }
+        if(orientation==2){
+            posX=posX+1;
+        }
+        if(orientation==3){
+            posY=posY+1;
+        }
+    }
+}
+
+void append_value(int ind1,int ind2,int val){
+    if (grid_matrix[ind1][ind2]==4 && grid_matrix[ind1][ind2]==3 && grid_matrix[ind1][ind2]==2){ //don't overwrite trap tiles,visited tiles,victim tiles
+        return;
+    }
+    grid_matrix[ind1][ind2]=val;
+}
 
 void append_to_matrix(int Ntiles,int ao){ 
     /*
@@ -105,23 +90,23 @@ void append_to_matrix(int Ntiles,int ao){
     }
     if(ao==0){
         for (int i=posX;i<=Ntiles+posX;i++){ 
-            grid_matrix[i][posY]=1;
+            append_value(i,posY,1);
         }
     }
     if(ao==2){
         for (int i=posX;i>=posX-Ntiles;i--){ 
-            grid_matrix[i][posY]=1;
+            append_value(i,posY,1);
         }            
     }   
     
     if(ao==1){
         for (int i=posY;i<=Ntiles+posY;i++){ 
-            grid_matrix[posX][i]=1;
+            append_value(posX,i,1);
         }
     }
     if(ao==3){
         for (int i=posY;i>=posY-Ntiles;i--){ 
-            grid_matrix[posX][i]=1;
+            append_value(posX,i,1);
         }            
     }
 }   

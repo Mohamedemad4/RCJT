@@ -47,6 +47,7 @@ volatile int grid_matrix [40][40];
 #define LED_PIN 13 //change Me 
 #define max_dist 400
 
+#define ONE_TILE_DELAY 200
 #define SERVO_45_DELAY 65
 #define SERVO_SPEED_FOR 180
 #define SERVO_SPEED_BACK 0

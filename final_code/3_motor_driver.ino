@@ -119,11 +119,18 @@ void turn_45_to_the_right_wheels(){
   delay(SERVO_45_DELAY);
   motor_stop();
 }
-void drive_one_tile(){
+void drive_one_tile_f(){
   drive_forward();
-  delay(200); //to be configed
+  delay(ONE_TILE_DELAY); //to be configed
   motor_stop();
-  
+  update_location(1);
+}
+
+void drive_one_tile_b(){
+  drive_forward();
+  delay(ONE_TILE_DELAY); //to be configed
+  motor_stop();
+  update_location(2);
 }
 void drive_forward(){
   DEBUG("drive_forward");
