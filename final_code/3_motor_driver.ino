@@ -30,7 +30,7 @@ bool compass_based_turn(int dc,bool pos){
   DEBUG("compass_based_turn");
   DEBUG_INT(pos);
   DEBUG_INT(dc);
-  gotoVic=0; //so it doesn't execute turn() while turning,and can still scan for HVs (discuss)
+  //gotoVic=0; //so it doesn't execute turn() while turning,and can still scan for HVs (discuss)
   unsigned long start = millis();
   while(isNotWithinRange(3,c,getCompHeading())){
     if (pos){
@@ -101,7 +101,6 @@ void delay_based_turn(int dc,bool pos){
 }
 
 void motor_stop(){
-  DEBUG("STOP");
   fright.write(SERVO_STOP_VAL);
   bright.write(SERVO_STOP_VAL);
   fleft.write(SERVO_STOP_VAL);
@@ -170,7 +169,7 @@ void turn_right(){
 
 void drop_kit(int nKits=1){
     DEBUG("drop_kit");
-    append_to_matrix(posX,posY,2); //set current tile as a victims tile
+    append_value(posX,posY,2); //set current tile as a victims tile
     motor_stop();
     StartCheckingForVics=0;
     int i;
@@ -197,7 +196,7 @@ void drop_kit(int nKits=1){
 void trap_cond(){
     if(digitalRead(IR_Sensor_PIN)==1){//if a trap is found 
       motor_stop();
-      append_to_matrix(posX,posY,3);
+      append_value(posX,posY,3);
       drive_one_tile_b();
       turn(180,1);
       if(GetDist(left_us)>GetDist(right_us)){//turn left if left is greater than right

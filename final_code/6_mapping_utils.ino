@@ -1,8 +1,8 @@
 void PrintMatrix()
 {
    DEBUG("Printing Matrix On Serial");
-   for (int i = 0; i < 40; i++) {
-       for (int j = 0; j < 40; j++) {
+   for (int i = 0; i < X_COLS; i++) {
+       for (int j = 0; j < Y_COLS; j++) {
            Serial.print("  ");Serial.print(grid_matrix[i][j], DEC);
        }
        Serial.println();
@@ -41,16 +41,16 @@ void update_matrix(){
 void update_location(int case_up){
     if (case_up==1){ //the robot moves one tile forward
         if (orientation==0){
-            posX=posX+1;
+            posX=posX+1;//posY=posY+1;
         }
         if(orientation==1){
-            posY=posY+1;
+            posY=posY+1;//posX=posX+1;
         }
         if(orientation==2){
-            posX=posX-1;
+            posX=posX-1;//posY=posY-1;
         }
         if(orientation==3){
-            posY=posY-1;
+            posY=posY-1;//posX=posX-1;
         }
     }
     if(case_up==2){ //the robot moves one tile backwards
@@ -67,14 +67,9 @@ void update_location(int case_up){
             posY=posY+1;
         }
     }
+    append_value(posX,posY,4);
 }
 
-void append_value(int ind1,int ind2,int val){
-    if (grid_matrix[ind1][ind2]==4 && grid_matrix[ind1][ind2]==3 && grid_matrix[ind1][ind2]==2){ //don't overwrite trap tiles,visited tiles,victim tiles
-        return;
-    }
-    grid_matrix[ind1][ind2]=val;
-}
 
 void append_to_matrix(int Ntiles,int ao){ 
     /*

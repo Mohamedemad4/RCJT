@@ -17,25 +17,9 @@ MPU6050 accc;
 HMC5883L mag;
 bool bmp;
 
-Servo deploy_servo;
+#define X_COLS 40
+#define Y_COLS 40
 
-float StartwallTemp;
-volatile int accelReadings[10];
-volatile int base_accelReadings[10];
-volatile int accelReadings_curInd;
-volatile bool VizvictimIsDetected;
-volatile int cpos=4; //contains current position of the cam Servo,2=right,0=left,1=Forward
-volatile int vtype=4; //contains the Viz victims type,2=H,0=U,1=S
-volatile unsigned long previousMillisCheckForImpTStuff = 0;
-
-volatile int orientation=0; // 0 N , 1 E , 2 S , 3 W,assume f from starting pos = N
-volatile int posX=10;// assume 0,0 on start position
-volatile int posY=10;
-
-/*
-0=Wall,1=unvistedTile,2=VictimTile,3=Trap Tile,4=visited tile
-*/
-volatile int grid_matrix [40][40];
 #define enableTimesuff 1 //enables TimerOne CheckForVicimsAndDropKits() Interrupt also needed for LOPD ,Use me instead of setting StartCheckingForVics
 #define gotoVic 1 //enable going to victims on sight
 
@@ -48,6 +32,29 @@ volatile int grid_matrix [40][40];
 #define SERVO_SPEED_FOR 180
 #define SERVO_SPEED_BACK 0
 #define SERVO_STOP_VAL 90
+
+
+Servo deploy_servo;
+
+float StartwallTemp;
+volatile int accelReadings[10];
+volatile int base_accelReadings[10];
+volatile int accelReadings_curInd;
+volatile bool VizvictimIsDetected;
+volatile bool StartCheckingForVics;
+volatile int run_check_start_tile;
+volatile int cpos=4; //contains current position of the cam Servo,2=right,0=left,1=Forward
+volatile int vtype=4; //contains the Viz victims type,2=H,0=U,1=S
+volatile unsigned long previousMillisCheckForImpTStuff = 0;
+
+volatile int orientation=0; // 0 N , 1 E , 2 S , 3 W,assume f from starting pos = N
+volatile int posX=0;// assume 0,0 on start position
+volatile int posY=0;
+
+/*
+0=Wall,1=unvistedTile,2=VictimTile,3=Trap Tile,4=visited tile
+*/
+volatile int grid_matrix [X_COLS][Y_COLS];
 
 NewPing left_us(A0,A0,max_dist);
 NewPing center_us(A1,A1,max_dist);
@@ -79,8 +86,13 @@ void setup(){
   deploy_servo.attach(11);
   deploy_servo.write(130);
 
-  grid_matrix[0][0]=1; //set the init position to zero,since we will always work from a corner
-    
+  for (int i=0; i < Y_COLS; i++) {
+    for (int j=0; j < X_COLS; j++) {
+      grid_matrix[i][j] =6; //fill it with a value we don't use;
+    }
+  }
+  grid_matrix[0][0]=4; //set the init position to zero,since we will always work from a corner
+  
   digitalWrite(A10,0);
   
   // for the 2 Digital comm pins
@@ -122,14 +134,18 @@ void setup(){
   //while(digitalRead(A11)==1){delay(50);}
   DEBUG("Starting...");
   //StartCheckingForVics=enableTimesuff;
-  delay(1000);
-  update_matrix();
-//  PrintMatrix(); 
+  delay(1000); 
 }
 
 void loop(){
 //  DEBUG("LOOP");
 //  rightWallfollower();
-sensorDebug();
-delay(1000);
+//sensorDebug();
+//delay(1000);
+MappingLoop();
+PrintMatrix();
+while(1){
+  /* co de */
+}
+
 }

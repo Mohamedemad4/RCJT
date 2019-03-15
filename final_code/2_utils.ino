@@ -181,3 +181,13 @@ void adjust_orient(int pos){
     DEBUG_RAW("CURRENT orientation is: ");
     DEBUG_INT(orientation);
 }
+
+void append_value(int ind1,int ind2,int val){
+    if (grid_matrix[ind1][ind2]==4 && grid_matrix[ind1][ind2]==3 && grid_matrix[ind1][ind2]==2){ //don't overwrite trap tiles,visited tiles,victim tiles
+        return;
+    }
+    if(grid_matrix[ind1][ind2]==0){
+      return; //fix ME fucker,don't look at walls and overwrite them from the side
+    }
+    grid_matrix[ind1][ind2]=val;
+}
