@@ -133,37 +133,37 @@ void drive_one_tile_b(){
 }
 void drive_forward(){
   DEBUG("drive_forward");
-  fright.write(SERVO_SPEED_BACK);
-  bright.write(SERVO_SPEED_BACK);
-  fleft.write(SERVO_SPEED_FOR);
-  bleft.write(SERVO_SPEED_FOR);
+  fright.write(SERVO_SPEED_FOR_RIGHT);
+  bright.write(SERVO_SPEED_FOR_RIGHT);
+  fleft.write(SERVO_SPEED_FOR_LEFT);
+  bleft.write(SERVO_SPEED_FOR_LEFT);
   checkForimpTimeStuff();
 }
 
 void drive_backward(){
   DEBUG("drive_backward");
-  fright.write(SERVO_SPEED_FOR);
-  bright.write(SERVO_SPEED_FOR);
-  fleft.write(SERVO_SPEED_BACK);
-  bleft.write(SERVO_SPEED_BACK);
+  fright.write(SERVO_SPEED_BACK_RIGHT);
+  bright.write(SERVO_SPEED_BACK_RIGHT);
+  fleft.write(SERVO_SPEED_BACK_LEFT);
+  bleft.write(SERVO_SPEED_BACK_LEFT);
   checkForimpTimeStuff();
 }
 
 void turn_left(){
   DEBUG("turn_left");
-  fright.write(SERVO_SPEED_BACK);
-  bright.write(SERVO_SPEED_BACK);
-  fleft.write(SERVO_SPEED_BACK);
-  bleft.write(SERVO_SPEED_BACK);
+  fright.write(SERVO_SPEED_FOR_RIGHT);
+  bright.write(SERVO_SPEED_FOR_RIGHT);
+  fleft.write(SERVO_SPEED_BACK_LEFT);
+  bleft.write(SERVO_SPEED_BACK_LEFT);
   checkForimpTimeStuff();
 }
 
 void turn_right(){
   DEBUG("turn_right");
-  fright.write(SERVO_SPEED_FOR);
-  bright.write(SERVO_SPEED_FOR);
-  fleft.write(SERVO_SPEED_FOR);
-  bleft.write(SERVO_SPEED_FOR);
+  fright.write(SERVO_SPEED_BACK_RIGHT);
+  bright.write(SERVO_SPEED_BACK_RIGHT);
+  fleft.write(SERVO_SPEED_FOR_LEFT);
+  bleft.write(SERVO_SPEED_FOR_LEFT);
   checkForimpTimeStuff();
 }
 
