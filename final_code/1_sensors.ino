@@ -81,7 +81,7 @@ void sensorDebug(){
          DEBUG_RAW("Alt: ");
          DEBUG_INT(GetAlt());
         
-         DEBUG_RAW("is the Pi detected?: ")
+         DEBUG_RAW("is the Pi detected?: ");  
          DEBUG_INT(PiIsActive);
 
          DEBUG("");

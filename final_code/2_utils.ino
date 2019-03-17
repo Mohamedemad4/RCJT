@@ -118,8 +118,10 @@ void checkForimpTimeStuff(){
     DEBUG("checkForimpTimeStuff()");
     checkForLOPD();
     CheckForVicimsAndDropKits();
-    check_start_tile();
-    SaveMatrixToEEPROM();
+    #if USEMATRIX==1
+      check_start_tile();
+      SaveMatrixToEEPROM();
+    #endif
   }
 }
 

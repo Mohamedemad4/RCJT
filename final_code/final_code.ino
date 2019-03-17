@@ -18,7 +18,7 @@ SoftwareWire Wire2( A4, A5);// SDA,SCL
 MPU6050 accc;
 HMC5883L mag;
 bool bmp;
-
+#define USEMATRIX 1
 #define X_COLS 24
 #define Y_COLS 24
 
@@ -33,6 +33,13 @@ bool bmp;
 #define SERVO_45_DELAY 65
 #define SERVO_SPEED_FOR 180
 #define SERVO_SPEED_BACK 0
+
+#define SERVO_SPEED_BACK_RIGHT 180
+#define SERVO_SPEED_FOR_RIGHT 0
+
+#define SERVO_SPEED_BACK_LEFT 0
+#define SERVO_SPEED_FOR_LEFT 180
+
 #define SERVO_STOP_VAL 90
 
 
@@ -88,14 +95,14 @@ void setup(){
 
   deploy_servo.attach(9);
   deploy_servo.write(60);
-
-  for (int i=0; i < Y_COLS; i++) {
-    for (int j=0; j < X_COLS; j++) {
-      grid_matrix[i][j] =6; //fill it with a value we don't use;
+  #if USEMATRIX==1
+    for (int i=0; i < Y_COLS; i++) {
+      for (int j=0; j < X_COLS; j++) {
+        grid_matrix[i][j] =6; //fill it with a value we don't use;
+      }
     }
-  }
-  grid_matrix[0][0]=4; //set the init position to zero,since we will always work from a corner
-  
+    grid_matrix[0][0]=4; //set the init position to zero,since we will always work from a corner
+  #endif
   digitalWrite(A10,0);
   
   // for the 2 Digital comm pins
