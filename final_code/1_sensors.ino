@@ -60,25 +60,33 @@ int16_t GetAccXpY(){
   return accc.getAccelerationX();//+accc.getAccelerationY();
 } 
 void sensorDebug(){
-         Serial.print("Distance on A0: ");
-         Serial.println(GetDist(left_us));
-         Serial.print("Distance on A1: ");
-         Serial.println(GetDist(center_us));
-         Serial.print("Distance on A2: ");
-         Serial.println(GetDist(right_us));
+         DEBUG_RAW("Distance on left_us: ");
+         DEBUG_INT(GetDist(left_us));
+         DEBUG_RAW("Distance on center_us: ");
+         DEBUG_INT(GetDist(center_us));
+         DEBUG_RAW("Distance on right_us ");
+         DEBUG_INT(GetDist(right_us));
          
-         Serial.print("Heat on A4A5 (left): ");
-         Serial.println(GetIrHeatleft());
-         Serial.print("Heat on D21D20 (right): ");
-         Serial.println(GetIrHeatright());
-
+         DEBUG_RAW("Heat on A4A5 (left): ");
+         DEBUG_INT(GetIrHeatleft());
+         DEBUG_RAW("Heat on D21D20 (right): ");
+         DEBUG_INT(GetIrHeatright());
           
-         Serial.print("Color IR Value: ");
-         Serial.println(digitalRead(A3));
+         DEBUG_RAW("Color IR Value: ");
+         DEBUG_INT(digitalRead(A3));
   
-         Serial.print("Compass: ");
-         Serial.println(getCompHeading());
+         DEBUG_RAW("Compass: ");
+         DEBUG_INT(getCompHeading());
   
-         Serial.print("Alt: ");
-         Serial.println(GetAlt());
+         DEBUG_RAW("Alt: ");
+         DEBUG_INT(GetAlt());
+        
+         DEBUG_RAW("is the Pi detected?: ")
+         DEBUG_INT(PiIsActive);
+
+         DEBUG("");
+         DEBUG_RAW("Last victim type Is: ");
+         DEBUG_INT(vtype);
+         DEBUG_RAW("Last victim location: ");
+         DEBUG_INT(cpos);
 }
