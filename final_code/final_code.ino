@@ -9,7 +9,9 @@
 #include "I2Cdev.h"
 #include "MPU6050.h"
 
-//Left Sensor connected to A8,A9
+#include <EEPROM.h>
+
+//Left Sensor connected to A4,A5
 //Right Sensor connected to Digital pins 20,21
 SoftwareWire Wire2( A4, A5);// SDA,SCL
 
@@ -17,10 +19,10 @@ MPU6050 accc;
 HMC5883L mag;
 bool bmp;
 
-#define X_COLS 40
-#define Y_COLS 40
+#define X_COLS 24
+#define Y_COLS 24
 
-#define enableTimesuff 1 //enables TimerOne CheckForVicimsAndDropKits() Interrupt also needed for LOPD ,Use me instead of setting StartCheckingForVics
+#define enableTimesuff 0 //enables  CheckForVicimsAndDropKits()  needed for LOPD ,Use me instead of setting StartCheckingForVics
 #define gotoVic 1 //enable going to victims on sight
 
 #define IR_Sensor_PIN A3
@@ -48,8 +50,8 @@ volatile int vtype=4; //contains the Viz victims type,2=H,0=U,1=S
 volatile unsigned long previousMillisCheckForImpTStuff = 0;
 
 volatile int orientation=0; // 0 N , 1 E , 2 S , 3 W,assume f from starting pos = N
-volatile int posX=0;// assume 0,0 on start position
-volatile int posY=0;
+volatile int posX=0;// assume 0,0 on start position for Now(change to the center of the maze)
+volatile int posY=0; //also change it from check_start_tile();
 
 /*
 0=Wall,1=unvistedTile,2=VictimTile,3=Trap Tile,4=visited tile
@@ -78,13 +80,13 @@ void setup(){
   //IR Color Sensor
   pinMode(IR_Sensor_PIN, INPUT);
 
-  fright.attach(13);
-  fleft.attach(10);
-  bright.attach(9);
-  bleft.attach(12);
+  fright.attach(10);
+  fleft.attach(12);
+  bright.attach(11);
+  bleft.attach(13);
 
-  deploy_servo.attach(11);
-  deploy_servo.write(130);
+  deploy_servo.attach(9);
+  deploy_servo.write(60);
 
   for (int i=0; i < Y_COLS; i++) {
     for (int j=0; j < X_COLS; j++) {
@@ -131,21 +133,45 @@ void setup(){
     DEBUG("10DOF Not detected at 0x77");
   }
   DEBUG("Ready ...");
-  //while(digitalRead(A11)==1){delay(50);}
+  while(digitalRead(A11)==1){delay(50);}
   DEBUG("Starting...");
-  //StartCheckingForVics=enableTimesuff;
+  StartCheckingForVics=enableTimesuff;
   delay(1000); 
 }
 
-void loop(){
-//  DEBUG("LOOP");
-//  rightWallfollower();
-//sensorDebug();
-//delay(1000);
-MappingLoop();
-PrintMatrix();
-while(1){
-  /* co de */
+void SaveMatrixToEEPROM()
+{
+   int address=0;
+   DEBUG("QuickSaving....");
+   for (int i = 0; i < X_COLS; i++) {
+       for (int j = 0; j < Y_COLS; j++) {
+          EEPROM.update(address,grid_matrix[i][j]);
+          address+=2;
+       }
+   }
 }
 
+void LoadFromEEPROM(){
+   int address=0;
+   DEBUG("Restoring....");
+   for (int i = 0; i < X_COLS; i++)  {
+       for (int j = 0; j < Y_COLS; j++) {
+          grid_matrix[i][j]=EEPROM.read(address);
+          address+=2;
+       }
+   }
+}
+void loop(){
+  //rightWallfollower();
+  drive_forward();
+  delay(2000);
+  drive_backward();
+  delay(2000);
+  turn_right();
+  delay(2000);
+  turn_left();
+  delay(2000);
+  motor_stop();
+  while(1){}
+  
 }

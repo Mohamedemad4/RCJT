@@ -41,30 +41,38 @@ void update_matrix(){
 void update_location(int case_up){
     if (case_up==1){ //the robot moves one tile forward
         if (orientation==0){
-            posX=posX+1;//posY=posY+1;
+            posX=posX+2;//posY=posY+1;
+            append_value(posX-1,posY,4); //so the middle tile is also visited
         }
         if(orientation==1){
-            posY=posY+1;//posX=posX+1;
+            posY=posY+2;//posX=posX+1;
+            append_value(posX,posY-1,4);
         }
         if(orientation==2){
-            posX=posX-1;//posY=posY-1;
+            posX=posX-2;//posY=posY-1;
+            append_value(posX+1,posY,4);
         }
         if(orientation==3){
-            posY=posY-1;//posX=posX-1;
+            posY=posY-2;//posX=posX-1;
+            append_value(posX,posY+1,4);
         }
     }
     if(case_up==2){ //the robot moves one tile backwards
         if (orientation==0){
-            posX=posX-1;
+            posX=posX-2;
+            append_value(posX+1,posY,4);
         }
         if(orientation==1){
-            posY=posY-1;
+            posY=posY-2;
+            append_value(posX,posY+1,4);
         }
         if(orientation==2){
-            posX=posX+1;
+            posX=posX+2;
+            append_value(posX-1,posY,4);
         }
         if(orientation==3){
-            posY=posY+1;
+            posY=posY+2;
+            append_value(posX,posY-1,4);
         }
     }
     append_value(posX,posY,4);

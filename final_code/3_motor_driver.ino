@@ -133,8 +133,8 @@ void drive_one_tile_b(){
 }
 void drive_forward(){
   DEBUG("drive_forward");
-  fright.write(SERVO_SPEED_FOR);
-  bright.write(SERVO_SPEED_FOR);
+  fright.write(SERVO_SPEED_BACK);
+  bright.write(SERVO_SPEED_BACK);
   fleft.write(SERVO_SPEED_FOR);
   bleft.write(SERVO_SPEED_FOR);
   checkForimpTimeStuff();
@@ -142,8 +142,8 @@ void drive_forward(){
 
 void drive_backward(){
   DEBUG("drive_backward");
-  fright.write(SERVO_SPEED_BACK);
-  bright.write(SERVO_SPEED_BACK);
+  fright.write(SERVO_SPEED_FOR);
+  bright.write(SERVO_SPEED_FOR);
   fleft.write(SERVO_SPEED_BACK);
   bleft.write(SERVO_SPEED_BACK);
   checkForimpTimeStuff();
@@ -153,8 +153,8 @@ void turn_left(){
   DEBUG("turn_left");
   fright.write(SERVO_SPEED_BACK);
   bright.write(SERVO_SPEED_BACK);
-  fleft.write(SERVO_SPEED_FOR);
-  bleft.write(SERVO_SPEED_FOR);
+  fleft.write(SERVO_SPEED_BACK);
+  bleft.write(SERVO_SPEED_BACK);
   checkForimpTimeStuff();
 }
 
@@ -162,8 +162,8 @@ void turn_right(){
   DEBUG("turn_right");
   fright.write(SERVO_SPEED_FOR);
   bright.write(SERVO_SPEED_FOR);
-  fleft.write(SERVO_SPEED_BACK);
-  bleft.write(SERVO_SPEED_BACK);
+  fleft.write(SERVO_SPEED_FOR);
+  bleft.write(SERVO_SPEED_FOR);
   checkForimpTimeStuff();
 }
 
@@ -181,14 +181,18 @@ void drop_kit(int nKits=1){
     }
     if (nKits==1){
       delay(100);
-      deploy_servo.write(180);
+      deploy_servo.write(60);
       delay(500);
-      deploy_servo.write(130);
+      deploy_servo.write(140);
     }else{
       delay(100);
-      deploy_servo.write(180);
+      deploy_servo.write(60);
       delay(500);
-      deploy_servo.write(130);
+      deploy_servo.write(140);
+      delay(100);
+      deploy_servo.write(60);
+      delay(500);
+      deploy_servo.write(140);
    }
    StartCheckingForVics=1;// imagine how hillarouis that rec would look
 }

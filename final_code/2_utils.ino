@@ -100,12 +100,14 @@ void runLOPD(){
 void check_start_tile(){
   if(run_check_start_tile==10){
     if(posX ==0 && posY==0){
+      DEBUG("WE are on the start tile");
       motor_stop();
       delay(10000);
     }
   }else{
     run_check_start_tile++;
   }
+  DEBUG_INT(run_check_start_tile);
 }
 void checkForimpTimeStuff(){
   unsigned long currentMillis = millis();
@@ -115,6 +117,7 @@ void checkForimpTimeStuff(){
     checkForLOPD();
     CheckForVicimsAndDropKits();
     check_start_tile();
+    SaveMatrixToEEPROM();
   }
 }
 
