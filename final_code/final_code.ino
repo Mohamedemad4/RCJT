@@ -43,6 +43,7 @@ volatile int accelReadings[10];
 volatile int base_accelReadings[10];
 volatile int accelReadings_curInd;
 volatile bool VizvictimIsDetected;
+volatile bool PiIsActive;
 volatile bool StartCheckingForVics;
 volatile int run_check_start_tile;
 volatile int cpos=4; //contains current position of the cam Servo,2=right,0=left,1=Forward
@@ -139,28 +140,6 @@ void setup(){
   delay(1000); 
 }
 
-void SaveMatrixToEEPROM()
-{
-   int address=0;
-   DEBUG("QuickSaving....");
-   for (int i = 0; i < X_COLS; i++) {
-       for (int j = 0; j < Y_COLS; j++) {
-          EEPROM.update(address,grid_matrix[i][j]);
-          address+=2;
-       }
-   }
-}
-
-void LoadFromEEPROM(){
-   int address=0;
-   DEBUG("Restoring....");
-   for (int i = 0; i < X_COLS; i++)  {
-       for (int j = 0; j < Y_COLS; j++) {
-          grid_matrix[i][j]=EEPROM.read(address);
-          address+=2;
-       }
-   }
-}
 void loop(){
   //rightWallfollower();
   drive_forward();
@@ -173,5 +152,4 @@ void loop(){
   delay(2000);
   motor_stop();
   while(1){}
-  
 }

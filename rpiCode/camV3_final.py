@@ -21,11 +21,11 @@ wiringpi.digitalWrite(12,1)
 
 
 def capture(camPos):
-        if camPos==0:
+        if camPos==0: #left cam
             cam=cv2.VideoCapture(0)
-        if camPos==1:
+        if camPos==1:# center cam
             cam=cv2.VideoCapture(1)
-        if camPos==2:
+        if camPos==2:#right cam
             cam=cv2.VideoCapture(2)
         readCam=cam.read()
         cam.release()
@@ -52,10 +52,11 @@ def setReadPos(i):
         wiringpi.digitalWrite(20,0)
     wiringpi.digitalWrite(12,1)
 
-def SendFoundSignal(ca):
+def SendFoundSignal(ca,i):
     try:
         c=ca[0][0].upper() # change THIS and set a min confidence thresh
-        print(c[0][1])
+        print("conf score is: {0}".format(c[0][1])
+        setReadPos(i) # set it only after something is found
         if (c[0][1]>3)==False: #min_thresh
             c="NADA"
     except:
@@ -80,6 +81,11 @@ def SendFoundSignal(ca):
     wiringpi.digitalWrite(16,1)
     return True
 
+def active():
+    #send a singal to the arduino that the PI is active
+    wiringpi.digitalWrite(12,0)
+    time.sleep(0.01)
+    wiringpi.digitalWrite(12,1)
 
 print("after Boot")
 print(os.popen("lsusb -t").read())
@@ -94,10 +100,10 @@ print(os.popen("lsusb -t").read())
 
 def run_process(i):
     t=time.time()
-    setReadPos(i)
-    SendFoundSignal(capture(i))
-    print(time.time()-t)
+    SendFoundSignal(capture(i),i)
+    print("time it took:{0}".format(time.time()-t))
 
+active()
 with PyTessBaseAPI() as api:
     while True:
         p=Pool(3)

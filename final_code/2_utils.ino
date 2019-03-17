@@ -57,6 +57,8 @@ void VizVictimINT(){
 
 void vicLocINT(){
     if (digitalRead(22)==1 && digitalRead(23)==1){
+      DEBUG("PI just sent activation signal");
+      PiIsActive=1;
     }
     if (digitalRead(22)==1 &&digitalRead(23)==0){
         DEBUG("Right");
@@ -193,4 +195,27 @@ void append_value(int ind1,int ind2,int val){
       return; //fix ME fucker,don't look at walls and overwrite them from the side
     }
     grid_matrix[ind1][ind2]=val;
+}
+
+void SaveMatrixToEEPROM()
+{
+   int address=0;
+   DEBUG("QuickSaving....");
+   for (int i = 0; i < X_COLS; i++) {
+       for (int j = 0; j < Y_COLS; j++) {
+          EEPROM.update(address,grid_matrix[i][j]);
+          address+=2;
+       }
+   }
+}
+
+void LoadFromEEPROM(){
+   int address=0;
+   DEBUG("Restoring....");
+   for (int i = 0; i < X_COLS; i++)  {
+       for (int j = 0; j < Y_COLS; j++) {
+          grid_matrix[i][j]=EEPROM.read(address);
+          address+=2;
+       }
+   }
 }
