@@ -22,6 +22,17 @@ bool bmp;
 #define X_COLS 24
 #define Y_COLS 24
 
+#define left 0
+#define center 1
+#define right 2
+#define back 3
+
+#define north 0
+#define east 1
+#define south 2
+#define west 3
+
+
 #define enableTimesuff 0 //enables  CheckForVicimsAndDropKits()  needed for LOPD ,Use me instead of setting StartCheckingForVics
 #define gotoVic 1 //enable going to victims on sight
 
@@ -30,7 +41,7 @@ bool bmp;
 #define max_dist 400
 
 #define ONE_TILE_DELAY 200
-#define SERVO_45_DELAY 65
+#define SERVO_45_DELAY 500 //65
 #define SERVO_SPEED_FOR 180
 #define SERVO_SPEED_BACK 0
 
@@ -66,9 +77,9 @@ volatile int posY=0; //also change it from check_start_tile();
 */
 volatile int grid_matrix [X_COLS][Y_COLS];
 
-NewPing left_us(A0,A0,max_dist);
+NewPing left_us(A3,A3,max_dist);
 NewPing center_us(A1,A1,max_dist);
-NewPing right_us(A2,A2,max_dist);
+NewPing right_us(A4,A4,max_dist);
 
 Servo fright;
 Servo fleft;
@@ -105,19 +116,17 @@ void setup(){
   #endif
   digitalWrite(A10,0);
   
-  // for the 2 Digital comm pins
+  // for the 2 Digital comm pins  
   pinMode(22,INPUT_PULLUP); 
   pinMode(23,INPUT_PULLUP);
   // for the Interrupt pins
-  pinMode(18,INPUT_PULLUP);
   pinMode(19,INPUT_PULLUP);
   pinMode(15,INPUT_PULLUP);
   pinMode(14,INPUT_PULLUP);
-  
-  attachInterrupt(digitalPinToInterrupt(18), vicLocINT, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(19), VizVictimINT, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(15), Pause, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(14), resetFunc, CHANGE);
+
+  attachInterrupt(digitalPinToInterrupt(14), vicLocINT, FALLING);
+  attachInterrupt(digitalPinToInterrupt(19), VizVictimINT, FALLING);
+  attachInterrupt(digitalPinToInterrupt(15), Pause, FALLING);
 
   Wire.begin(); 
   Wire2.begin(); 
@@ -141,22 +150,12 @@ void setup(){
     DEBUG("10DOF Not detected at 0x77");
   }
   DEBUG("Ready ...");
-  while(digitalRead(A11)==1){delay(50);}
+  //while(digitalRead(A11)==1){delay(50);}
   DEBUG("Starting...");
   StartCheckingForVics=enableTimesuff;
   delay(1000); 
 }
 
 void loop(){
-  //rightWallfollower();
-  drive_forward();
-  delay(2000);
-  drive_backward();
-  delay(2000);
-  turn_right();
-  delay(2000);
-  turn_left();
-  delay(2000);
-  motor_stop();
-  while(1){}
+
 }
