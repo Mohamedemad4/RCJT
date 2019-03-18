@@ -1,3 +1,9 @@
+/*
+Team Name: Alaah
+Mohamed emad
+farah Rushdy
+Fady Nader
+*/
 #include <Wire.h>
 #include <Servo.h>
 #include <math.h>
@@ -22,7 +28,7 @@ bool bmp;
 #define X_COLS 24
 #define Y_COLS 24
 
-#define enableTimesuff 0 //enables  CheckForVicimsAndDropKits()  needed for LOPD ,Use me instead of setting StartCheckingForVics
+#define enableTimesuff 1 //enables  CheckForVicimsAndDropKits()  needed for LOPD ,Use me instead of setting StartCheckingForVics
 #define gotoVic 1 //enable going to victims on sight
 
 #define IR_Sensor_PIN A3
@@ -148,8 +154,8 @@ void setup(){
 }
 
 void loop(){
-  //rightWallfollower();
-  drive_forward();
+  rightWallfollower();
+  /*drive_forward();
   delay(2000);
   drive_backward();
   delay(2000);
@@ -158,5 +164,5 @@ void loop(){
   turn_left();
   delay(2000);
   motor_stop();
-  while(1){}
+  while(1){}*/
 }
