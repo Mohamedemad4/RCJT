@@ -33,21 +33,22 @@ bool bmp;
 #define west 3
 
 
-#define enableTimesuff 1  //enables  CheckForVicimsAndDropKits()  needed for LOPD ,Use me instead of setting StartCheckingForVics
+#define enableTimesuff 0  //enables  CheckForVicimsAndDropKits()  needed for LOPD ,Use me instead of setting StartCheckingForVics
 #define gotoVic 1 //enable going to victims on sight
 
 #define IR_Sensor_PIN A3
-#define LED_PIN 13 //change Me 
+#define LED_PIN 50
+#define BUZZER_PIN A15
 #define max_dist 400
 
 #define ONE_TILE_DELAY 200
 #define SERVO_90_DELAY 1900
 #define SERVO_45_DELAY 500 //65
 #define SERVO_SPEED_FOR 90//180
-#define SERVO_SPEED_BACK 90//0
+#define SERVO_SPEED_BACK 90// 0
 
-#define SERVO_SPEED_BACK_RIGHT 90//180
-#define SERVO_SPEED_FOR_RIGHT 90//0
+#define SERVO_SPEED_BACK_RIGHT 90// 180
+#define SERVO_SPEED_FOR_RIGHT 90// 0
 
 #define SERVO_SPEED_BACK_LEFT 90//0
 #define SERVO_SPEED_FOR_LEFT 90//180
@@ -78,9 +79,9 @@ volatile int posY=0; //also change it from check_start_tile();
 */
 volatile int grid_matrix [X_COLS][Y_COLS];
 
-NewPing left_us(A4,A4,max_dist);
-NewPing center_us(48,48,max_dist);
-NewPing right_us(A2,A2,max_dist);
+NewPing left_us(51,51,max_dist);
+NewPing center_us(49,49,max_dist);
+NewPing right_us(47,47,max_dist);
 
 Servo fright;
 Servo fleft;
@@ -135,8 +136,8 @@ void setup(){
   Serial1.begin(9600);
 
   Wire.beginTransmission(0x77);
-  int error = Wire.endTransmission();
-  if  (error==0){
+  int error =0;//= Wire.endTransmission();
+  if  (false){
     DEBUG("Setting Up 10DOF sensors");
     accc.initialize(); //see README
     accc.setI2CBypassEnabled(true);
@@ -147,16 +148,21 @@ void setup(){
 	  DEBUG("Gathring Data for LOPD system");
     runLOPD();
   }else{
-    bmp=false;
+    bmp=false;  
     DEBUG("10DOF Not detected at 0x77");
   }
   DEBUG("Ready ...");
-  while(digitalRead(A11)==1){delay(50);}
+  //while(digitalRead(A11)==1){delay(50);}
   DEBUG("Starting...");
   StartCheckingForVics=enableTimesuff;
   delay(1000); 
 }
 
 void loop(){
- rightWallfollower();
+ // turn(90,1);
+ // delay(1700);
+ //s();
+ drive_forward();
+ //sensorDebug();
+ //delay(1000);
 }

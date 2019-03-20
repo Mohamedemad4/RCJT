@@ -9,6 +9,7 @@ void delay_based_turn(int dc,bool pos){
     DEBUG("delay_based_turn");
     DEBUG_INT(pos);
     DEBUG_INT(dc);
+    DEBUG_INT(SERVO_90_DELAY);
   if (dc==90 && pos==0){
       turn_left();
       delay(SERVO_90_DELAY);
@@ -25,6 +26,8 @@ void delay_based_turn(int dc,bool pos){
     turn_left();
     delay(SERVO_90_DELAY*2);
     }
+    motor_stop();
+    delay(60);
 }
 
 void motor_stop(){
