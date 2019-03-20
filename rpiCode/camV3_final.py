@@ -11,10 +11,10 @@ from USBSwitching import turnthemAlloff,turnPortOn
 log.basicConfig(filename="vvd.log")
 
 wiringpi.wiringPiSetupGpio()
-wiringpi.pinMode(21, wiringpi.GPIO.OUTPUT) # Servo
-wiringpi.pinMode(12, wiringpi.GPIO.OUTPUT) # int
-wiringpi.pinMode(16, wiringpi.GPIO.OUTPUT) # victim Found
-wiringpi.pinMode(20, wiringpi.GPIO.OUTPUT) # Servo
+wiringpi.pinMode(21, wiringpi.GPIO.OUTPUT) # com
+wiringpi.pinMode(12, wiringpi.GPIO.OUTPUT) # read Pos
+wiringpi.pinMode(16, wiringpi.GPIO.OUTPUT) # victim Found int
+wiringpi.pinMode(20, wiringpi.GPIO.OUTPUT) # com
 
 wiringpi.digitalWrite(16,1)
 wiringpi.digitalWrite(12,1)
