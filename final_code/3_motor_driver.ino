@@ -2,102 +2,29 @@ void turn(int dc,bool pos){ // todo:fall back on delays
   //pos=1 turns to the right
   //remeber to keep scanning while turning since we somewhat depend on finding MLX victims while turning
   DEBUG("Turn");
-  if(mag.testConnection()){ //electromagnitc interference from HVs
-    int c_status=compass_based_turn(dc,pos);
-    if (c_status==0){
-      delay_based_turn(dc,pos);
-    }
-  }else{
-    delay_based_turn(dc,pos);
-  }
-}
-
-bool compass_based_turn(int dc,bool pos){
-  int c;
-  int CcompHeading;
-  CcompHeading=getCompHeading();
-  if (CcompHeading==370){
-    return 0;
-  }
-  if (pos){
-    c=CcompHeading+dc;
-    if (c>360){
-      c=c-360;
-    }
-  }else{
-    c=fabs(CcompHeading-dc);
-  }
-  DEBUG("compass_based_turn");
-  DEBUG_INT(pos);
-  DEBUG_INT(dc);
-  //gotoVic=0; //so it doesn't execute turn() while turning,and can still scan for HVs (discuss)
-  unsigned long start = millis();
-  while(isNotWithinRange(3,c,getCompHeading())){
-    if (pos){
-      turn_right();
-    }else{
-      turn_left();
-    }
-    if((millis()-start)>500){ //give it 500Ms to work
-    DEBUG("Took too long,reseting");
-      if (pos){
-        turn_right();
-        delay(500); //reset POS
-      }else{
-        turn_left();
-        delay(500);
-      }
-      return 0;
-    }
-    checkForimpTimeStuff();
-  }
-  DEBUG("adjusting Orintation");
-  if(dc==90){
-    adjust_orient(pos);
-  }
-  if (dc==180){
-    adjust_orient(pos);
-    adjust_orient(pos);
-  }
-  return 1;
+  delay_based_turn(dc,pos);
 }
 
 void delay_based_turn(int dc,bool pos){
     DEBUG("delay_based_turn");
     DEBUG_INT(pos);
     DEBUG_INT(dc);
-    if (pos==1){
-    if (dc==180){
-      turn_45_to_the_right_wheels();
-      turn_45_to_the_right_wheels();
-      turn_45_to_the_right_wheels();
-      turn_45_to_the_right_wheels();
-     }
-     if (dc==90){
-      turn_45_to_the_right_wheels();
-      turn_45_to_the_right_wheels();
-     }
+  if (dc==90 && pos==0){
+      turn_left();
+      delay(SERVO_90_DELAY);
     }
-  else{
-    if (dc==180){
-      turn_45_to_the_left_wheels();
-      turn_45_to_the_left_wheels();
-      turn_45_to_the_left_wheels();
-      turn_45_to_the_left_wheels();
-     }
-     if(dc==90){
-       turn_45_to_the_left_wheels();
-       turn_45_to_the_left_wheels();
+  if (dc==90 && pos==1){
+      turn_right();
+      delay(SERVO_90_DELAY);
     }
-  }
-  DEBUG("adjusting Orintation");
-  if(dc==90){
-    adjust_orient(pos);
-  }
-  if (dc==180){
-    adjust_orient(pos);
-    adjust_orient(pos);
-  }
+  if(dc==180 && pos==1){
+    turn_right();
+    delay(SERVO_90_DELAY*2);
+    }
+  if(dc==180 && pos==0){
+    turn_left();
+    delay(SERVO_90_DELAY*2);
+    }
 }
 
 void motor_stop(){
@@ -219,10 +146,10 @@ void align_and_emergency(){
      //!!!dont forget to calibrate the delay  in the maze!!!
    while(GetDist(right_us)<=7){//aligment right
        turn_left();
-       delay(50);
+       delay(100);
      }
      while(GetDist(left_us)<=7){//aligment left
        turn_right();
-       delay(50);
+       delay(100);
      }
 }

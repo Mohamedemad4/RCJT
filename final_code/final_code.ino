@@ -18,7 +18,7 @@ SoftwareWire Wire2( A4, A5);// SDA,SCL
 MPU6050 accc;
 HMC5883L mag;
 bool bmp;
-#define USEMATRIX 1
+#define USEMATRIX 0
 #define X_COLS 24
 #define Y_COLS 24
 
@@ -33,7 +33,7 @@ bool bmp;
 #define west 3
 
 
-#define enableTimesuff 0 //enables  CheckForVicimsAndDropKits()  needed for LOPD ,Use me instead of setting StartCheckingForVics
+#define enableTimesuff 1  //enables  CheckForVicimsAndDropKits()  needed for LOPD ,Use me instead of setting StartCheckingForVics
 #define gotoVic 1 //enable going to victims on sight
 
 #define IR_Sensor_PIN A3
@@ -41,15 +41,16 @@ bool bmp;
 #define max_dist 400
 
 #define ONE_TILE_DELAY 200
+#define SERVO_90_DELAY 1900
 #define SERVO_45_DELAY 500 //65
-#define SERVO_SPEED_FOR 180
-#define SERVO_SPEED_BACK 0
+#define SERVO_SPEED_FOR 90//180
+#define SERVO_SPEED_BACK 90//0
 
-#define SERVO_SPEED_BACK_RIGHT 180
-#define SERVO_SPEED_FOR_RIGHT 0
+#define SERVO_SPEED_BACK_RIGHT 90//180
+#define SERVO_SPEED_FOR_RIGHT 90//0
 
-#define SERVO_SPEED_BACK_LEFT 0
-#define SERVO_SPEED_FOR_LEFT 180
+#define SERVO_SPEED_BACK_LEFT 90//0
+#define SERVO_SPEED_FOR_LEFT 90//180
 
 #define SERVO_STOP_VAL 90
 
@@ -77,9 +78,9 @@ volatile int posY=0; //also change it from check_start_tile();
 */
 volatile int grid_matrix [X_COLS][Y_COLS];
 
-NewPing left_us(A3,A3,max_dist);
-NewPing center_us(A1,A1,max_dist);
-NewPing right_us(A4,A4,max_dist);
+NewPing left_us(A4,A4,max_dist);
+NewPing center_us(48,48,max_dist);
+NewPing right_us(A2,A2,max_dist);
 
 Servo fright;
 Servo fleft;
@@ -150,12 +151,12 @@ void setup(){
     DEBUG("10DOF Not detected at 0x77");
   }
   DEBUG("Ready ...");
-  //while(digitalRead(A11)==1){delay(50);}
+  while(digitalRead(A11)==1){delay(50);}
   DEBUG("Starting...");
   StartCheckingForVics=enableTimesuff;
   delay(1000); 
 }
 
 void loop(){
-
+ rightWallfollower();
 }
