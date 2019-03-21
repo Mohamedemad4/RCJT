@@ -10,9 +10,13 @@ void wallFollower(){
 }
 void do_the_heavyLifting(){
 if(GetDist(right_us)>GetDist(left_us)){
+  drive_backward();
+  delay(60);
   turn(90,1);
 }
 else if(GetDist(right_us)<GetDist(left_us)){
+  drive_backward();
+  delay(60);
   turn(90,0);
 }
 }

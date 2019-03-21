@@ -44,7 +44,7 @@ bool bmp;
 
 #define IR_Sensor_PIN A3
 #define LED_PIN 13 //change Me 
-#define max_dist 400
+#define max_dist 60
 
 #define ONE_TILE_DELAY 200
 #define SERVO_90_DELAY 1900
@@ -166,13 +166,15 @@ void setup(){
 void loop(){
  //rightWallfollower();
  wallFollower();
+ //drive_forward();
  //wFFF();
  //rightWlfollower();
  //drive_forward();
  // sensorDebug();
-  /*delay(1000);
-  turn(90,1);
-  delay(3000);
-  turn(90,0);
-  delay(3000);(*/
+  //drive_forward();
+  //delay(2000);
+  //turn(90,1);
+  //delay(3000);
+ // turn(90,0);
+ // delay(3000);
 }
