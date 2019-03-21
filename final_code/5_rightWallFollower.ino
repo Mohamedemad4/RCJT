@@ -1,3 +1,22 @@
+void wallFollower(){
+ while(GetDist(center_us)>=5 && GetDist(left_us)>4 && GetDist(right_us)>4){
+        drive_forward();
+        delay(50);
+ }if(GetDist(center_us)<5){
+   do_the_heavyLifting();
+ } 
+ trap_cond();
+ align_and_emergency();
+}
+void do_the_heavyLifting(){
+if(GetDist(right_us)>GetDist(left_us)){
+  turn(90,1);
+}
+else if(GetDist(right_us)<GetDist(left_us)){
+  turn(90,0);
+}
+}
+
 void rightWallfollower(){
   //right wall follower 
       while(GetDist(center_us)>10 && GetDist(left_us)>7 && GetDist(right_us)>7){
@@ -7,17 +26,22 @@ void rightWallfollower(){
           //!!!dont forget to calibrate the us_  in the maze!!!
           
          if(GetDist(center_us)<=10  ){  //found a wall infront of you!
-            if(GetDist(right_us)<=5 && GetDist(center_us)<=10){
-              turn(90,0);
-            }
+         DEBUG("Found wall");
+            //if(GetDist(right_us)<=5 && GetDist(center_us)<=10){
+            //  turn(90,0);
+            //}
           if(GetDist(right_us)>=GetDist(left_us)){//turn right if there isn't a wall on the right
+            DEBUG("r>l");
+            DEBUG_INT(GetDist(right_us));
             turn(90,1);
             motor_stop();
             delay(100);
  
           }
 
-            else if(GetDist(left_us)>GetDist(right_us)){// turn left if there is a wall on the right
+            else if(GetDist(left_us)>=GetDist(right_us)){// turn left if there is a wall on the right
+            DEBUG("l<r");
+            DEBUG_INT(GetDist(left_us));
               turn(90,0);
               motor_stop();
               delay(100);
@@ -25,6 +49,6 @@ void rightWallfollower(){
          }
 
         
-           align_and_emergency();
-           trap_cond();
+           //align_and_emergency();
+           //trap_cond();
 }

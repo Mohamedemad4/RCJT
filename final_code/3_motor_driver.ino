@@ -25,6 +25,8 @@ void delay_based_turn(int dc,bool pos){
     turn_left();
     delay(SERVO_90_DELAY*2);
     }
+    motor_stop();
+    delay(100);
 }
 
 void motor_stop(){
