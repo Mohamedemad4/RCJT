@@ -1,3 +1,9 @@
+/*
+Team Name: Alaah
+Mohamed emad
+farah Rushdy
+Fady Nader
+*/
 #include <Wire.h>
 #include <Servo.h>
 #include <math.h>
