@@ -1,19 +1,16 @@
 void Pause(){
   noInterrupts();
   DEBUG("PAUSE");
-  while(digitalRead(A11)==1){delay(50);}
+  while(digitalRead(17)==1){delay(50);}
   interrupts();
 }
 
 void SeeIfLOP(){
   int SomearbRange=10;
   //for now we are using avrgs//deal with it 
-  //if (isNotWithinRange(SomearbRange,average(base_accelReadings,10),average(accelReadings,10))){
-  //  DEBUG("LOPD");
-//  }
-  DEBUG("SeeIfLop");
-  DEBUG_RAW("")
-  DEBUG_INT(average(base_accelReadings));
+  /*if (isNotWithinRange(SomearbRange,average(base_accelReadings,10),average(accelReadings,10))){
+    DEBUG("LOPD");
+  }*/
 }
 bool isNotWithinRange(int range,int l1,int l2){
   if ((fabs(l1-l2)>range)){
@@ -80,8 +77,6 @@ void vicLocINT(){
 void checkForLOPD(){
   if (accc.testConnection()==true){
     accelReadings[accelReadings_curInd]=GetAccXpY();
-    DEBUG_RAW("Check For LOPD: ");
-    DEBUG_INT(accelReadings[accelReadings_curInd]);
     if (accelReadings_curInd<10){
       accelReadings_curInd++;
     }else if(accelReadings_curInd==10){
@@ -94,9 +89,6 @@ void checkForLOPD(){
 void runLOPD(){
   for (int i=0;i<10;i++){
     base_accelReadings[accelReadings_curInd]=GetAccXpY(); //TODO:make me more fancy with 2D arrays
-    
-    DEBUG_RAW("base runLOPD Check For LOPD: ");
-    DEBUG_INT(base_accelReadings[accelReadings_curInd]);
     if (accelReadings_curInd<10){
      accelReadings_curInd++;
     }else if(accelReadings_curInd==10){

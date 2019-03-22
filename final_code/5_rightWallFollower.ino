@@ -1,8 +1,8 @@
 void wallFollower(){
- while(GetDist(center_us)>=5 && GetDist(left_us)>4 && GetDist(right_us)>4){
+ while(GetDist(center_us)>=7 && GetDist(left_us)>5 && GetDist(right_us)>5){
         drive_forward();
         delay(50);
- }if(GetDist(center_us)<5){
+ }if(GetDist(center_us)<7){
    do_the_heavyLifting();
  } 
  trap_cond();

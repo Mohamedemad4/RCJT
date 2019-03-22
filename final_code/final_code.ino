@@ -39,24 +39,24 @@ bool bmp;
 #define west 3
 
 
-#define enableTimesuff 1  //enables  CheckForVicimsAndDropKits()  needed for LOPD ,Use me instead of setting StartCheckingForVic0
+#define enableTimesuff 1  //enables  CheckForVicimsAndDropKits()  needed for LOPD ,Use me instead of setting StartCheckingForVics
 #define gotoVic 1 //enable going to victims on sight
 
 #define IR_Sensor_PIN A3
 #define LED_PIN 13 //change Me 
-#define max_dist 60
+#define max_dist 400
 
 #define ONE_TILE_DELAY 200
-#define SERVO_90_DELAY 1900
+#define SERVO_90_DELAY 700
 #define SERVO_45_DELAY 500 //65
 #define SERVO_SPEED_FOR 180
 #define SERVO_SPEED_BACK 0
 
-#define SERVO_SPEED_BACK_RIGHT 180//90//180
-#define SERVO_SPEED_FOR_RIGHT 0//90//0
+#define SERVO_SPEED_BACK_RIGHT 0//90//180
+#define SERVO_SPEED_FOR_RIGHT 180//90//0
 
-#define SERVO_SPEED_BACK_LEFT 0//90//0
-#define SERVO_SPEED_FOR_LEFT 180//90//180
+#define SERVO_SPEED_BACK_LEFT 180//90//0
+#define SERVO_SPEED_FOR_LEFT 0//90//180
 
 #define SERVO_STOP_VAL 90
 
@@ -108,11 +108,11 @@ void setup(){
 
   fright.attach(10);
   fleft.attach(12);
-  bright.attach(11);
-  bleft.attach(13);
+  bright.attach(13);//2t3akas
+  bleft.attach(11);//2t3akas
 
   deploy_servo.attach(9);
-  deploy_servo.write(60);
+  deploy_servo.write(140);
   #if USEMATRIX==1
     for (int i=0; i < Y_COLS; i++) {
       for (int j=0; j < X_COLS; j++) {
@@ -166,15 +166,30 @@ void setup(){
 void loop(){
  //rightWallfollower();
  //wallFollower();
- drive_forward();
+ //turn(90,0);
  //wFFF();
  //rightWlfollower();
- //drive_forward();
+ /*drive_forward();
+ delay(2000);
+ turn_right();
+  delay(1000);
+ turn_left();
+ delay(1000);
+ drive_backward();
+ delay(2000);
+ motor_stop();
+ while (1){}*/
  // sensorDebug();
-  //drive_forward();
-  //delay(2000);
-  //turn(90,1);
-  //delay(3000);
- // turn(90,0);
- // delay(3000);
+ /*drive_forward();
+ turn(90,1);
+ delay(3000);
+ turn(90,0);
+ delay(3000);*/
+ /* delay(1000);
+  turn(90,1);
+  delay(3000);
+  turn(90,0);
+  delay(3000);*/
+sensorDebug();
+delay(1000);
 }

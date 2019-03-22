@@ -1,5 +1,5 @@
 void turn(int dc,bool pos){ // todo:fall back on delays
-  //pos=1 turns to the right
+  //pos=1 turns to the left
   //remeber to keep scanning while turning since we somewhat depend on finding MLX victims while turning
   DEBUG("Turn");
   delay_based_turn(dc,pos);
@@ -9,19 +9,19 @@ void delay_based_turn(int dc,bool pos){
     DEBUG("delay_based_turn");
     DEBUG_INT(pos);
     DEBUG_INT(dc);
-  if (dc==90 && pos==0){
+  if (dc==90 && pos==1){
       turn_left();
       delay(SERVO_90_DELAY);
     }
-  if (dc==90 && pos==1){
+  if (dc==90 && pos==0){
       turn_right();
       delay(SERVO_90_DELAY);
     }
-  if(dc==180 && pos==1){
+  if(dc==180 && pos==0){
     turn_right();
     delay(SERVO_90_DELAY*2);
     }
-  if(dc==180 && pos==0){
+  if(dc==180 && pos==1){
     turn_left();
     delay(SERVO_90_DELAY*2);
     }
@@ -130,7 +130,8 @@ void trap_cond(){
     if(digitalRead(IR_Sensor_PIN)==1){//if a trap is found 
       motor_stop();
       append_value(posX,posY,3);
-      drive_one_tile_b();
+      drive_forward();
+//      delay();
       turn(180,1);
       if(GetDist(left_us)>GetDist(right_us)){//turn left if left is greater than right
         turn(90,0);
