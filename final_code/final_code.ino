@@ -40,12 +40,12 @@ bool bmp;
 #define west 3
 
 
-#define enableTimesuff 1  //enables  CheckForVicimsAndDropKits()  needed for LOPD ,Use me instead of setting StartCheckingForVics
+#define enableTimestuff 1 //enables  CheckForVicimsAndDropKits()  needed for LOPD ,Use me instead of setting StartCheckingForVics
 #define gotoVic 1 //enable going to victims on sight
 
-#define IR_Sensor_PIN 44
-#define LED_PIN 24 //change Me 
-#define max_dist 60
+#define IR_Sensor_PIN 28
+#define LED_PIN 24  
+#define max_dist 30
 
 #define ONE_TILE_DELAY 200
 #define SERVO_90_DELAY 700
@@ -126,21 +126,21 @@ void setup(){
   digitalWrite(A10,0);
   
   // for the 2 Digital comm pins  
-  pinMode(22,INPUT_PULLUP); 
-  pinMode(23,INPUT_PULLUP);
+  pinMode(22,INPUT);//_PULLUP); 
+  pinMode(23,INPUT);//_PULLUP);
   // for the Interrupt pins
   pinMode(19,INPUT_PULLUP);
   pinMode(15,INPUT_PULLUP);
-  pinMode(14,INPUT_PULLUP);
+  pinMode(18,INPUT_PULLUP);
 
-  attachInterrupt(digitalPinToInterrupt(14), vicLocINT, FALLING);
-  attachInterrupt(digitalPinToInterrupt(19), VizVictimINT, FALLING);
-  attachInterrupt(digitalPinToInterrupt(15), Pause, FALLING);
+  attachInterrupt(digitalPinToInterrupt(18), vicLocINT, CHANGE); //12GPIO pi after GND pin from the USB side used to specify location  
+  attachInterrupt(digitalPinToInterrupt(19), VizVictimINT, CHANGE); //found victim and pi detect pin goes to 16gp b4 GND on rpi
+  attachInterrupt(digitalPinToInterrupt(15), Pause, CHANGE); //button
 
   Wire.begin(); 
   Wire2.begin(); 
   Serial.begin(9600);
-  Serial1.begin(9600);
+  //Serial1.begin(9600);
 
   Wire.beginTransmission(0x77);
   int error = Wire.endTransmission();
@@ -161,13 +161,16 @@ void setup(){
   DEBUG("Ready ...");
   //while(digitalRead(A11)==1){delay(50);}
   DEBUG("Starting...");
-  StartCheckingForVics=enableTimesuff;
+  StartCheckingForVics=enableTimestuff;
   delay(1000); 
 }
 
 void loop(){
-rat();
- /*drive_forward();
+damn();
+//sensorDebug();
+//delay(1000);
+//rat();
+ /*drive_forward()  ;
  turn(90,1);
  delay(3000);
  turn(90,0);

@@ -56,6 +56,8 @@ void VizVictimINT(){
 }
 
 void vicLocINT(){
+     DEBUG_INT(digitalRead(22));
+     DEBUG_INT(digitalRead(23));
     if (digitalRead(22)==1 && digitalRead(23)==1){
       DEBUG("PI just sent activation signal");
       PiIsActive=1;
@@ -113,7 +115,7 @@ void check_start_tile(){
 }
 void checkForimpTimeStuff(){
   unsigned long currentMillis = millis();
-  if (currentMillis - previousMillisCheckForImpTStuff >= 100 && StartCheckingForVics) {//is True every 0.5S
+  if (currentMillis - previousMillisCheckForImpTStuff >= 500 && StartCheckingForVics) {//is True every 0.5S
     previousMillisCheckForImpTStuff = currentMillis;
     DEBUG("checkForimpTimeStuff()");
     checkForLOPD();
@@ -127,12 +129,10 @@ void checkForimpTimeStuff(){
 
 void DEBUG_RAW(const char* msg){
   Serial.print(msg);
-  Serial1.print(msg);
 }
 
 void DEBUG_INT(unsigned long int intMsg){
   Serial.println(intMsg);
-  Serial1.println(intMsg);  
 }
 
 int count_tiles(NewPing Sonar){

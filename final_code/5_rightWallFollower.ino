@@ -1,54 +1,56 @@
 void rat(){
- while(GetDist(center_us)>=7 && GetDist(left_us)>5 && GetDist(right_us)>5){
+ while(GetDist(center_us)>=7){
         drive_forward();
-        delay(50);
- }if(GetDist(center_us)<7){
+        //delay(50);
+ }
+ if(GetDist(center_us)<7){
    do_the_heavyLifting();
  } 
- trap_cond();
  align_and_emergency();
 }
 void do_the_heavyLifting(){
 if(GetDist(right_us)>GetDist(left_us)){
   turn(90,1);
+  motor_stop();
+  delay(100);
 }
 else if(GetDist(right_us)<GetDist(left_us)){
   turn(90,0);
+  motor_stop();
+  delay(100);
 }
 }
 
-void rightWallfollower(){
-  //right wall follower 
-      while(GetDist(center_us)>10 && GetDist(left_us)>7 && GetDist(right_us)>7){
-        drive_forward();
-        }
- 
-          //!!!dont forget to calibrate the us_  in the maze!!!
-          
-         if(GetDist(center_us)<=10  ){  //found a wall infront of you!
-         DEBUG("Found wall");
-            //if(GetDist(right_us)<=5 && GetDist(center_us)<=10){
-            //  turn(90,0);
-            //}
-          if(GetDist(right_us)>=GetDist(left_us)){//turn right if there isn't a wall on the right
-            DEBUG("r>l");
-            DEBUG_INT(GetDist(right_us));
-            turn(90,1);
-            motor_stop();
-            delay(100);
- 
-          }
 
-            else if(GetDist(left_us)>=GetDist(right_us)){// turn left if there is a wall on the right
-            DEBUG("l<r");
-            DEBUG_INT(GetDist(left_us));
-              turn(90,0);
-              motor_stop();
-              delay(100);
-              }
-         }
+//1 = left ,0=right
+void damn (){
+  while(GetDist(center_us)>10){
+    drive_forward();
+    }
 
-        
-           //align_and_emergency();
-           //trap_cond();
+ if(GetDist(center_us)<=10){
+  
+  if(GetDist(right_us)>=GetDist(left_us)){
+    turn(90,0);
+    }
+
+  else if(GetDist(right_us)<GetDist(left_us)){
+    turn(90,1);
+      }
+    }
+
+
+    if(GetDist(center_us)<10 && GetDist(right_us)<=5 && GetDist(left_us)<=5){}
+//alignment 
+
+while(GetDist(right_us)<5){
+  turn_left();
+  delay(100);
+  }
+
+while(GetDist(left_us)<5){
+  turn_right();
+  delay(100);
+  }
+
 }

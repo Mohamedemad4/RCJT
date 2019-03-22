@@ -73,7 +73,7 @@ void sensorDebug(){
          DEBUG_INT(GetIrHeatright());
           
          DEBUG_RAW("Color IR Value: ");
-         DEBUG_INT(digitalRead(A3));
+         DEBUG_INT(digitalRead(IR_Sensor_PIN));
   
          DEBUG_RAW("Compass: ");
          DEBUG_INT(getCompHeading());
@@ -83,8 +83,6 @@ void sensorDebug(){
         
          DEBUG_RAW("is the Pi detected?: ");  
          DEBUG_INT(PiIsActive);
-
-         DEBUG("");
          DEBUG_RAW("Last victim type Is: ");
          DEBUG_INT(vtype);
          DEBUG_RAW("Last victim location: ");
