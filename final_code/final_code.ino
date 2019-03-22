@@ -40,10 +40,10 @@ bool bmp;
 #define west 3
 
 
-#define enableTimesuff 0  //enables  CheckForVicimsAndDropKits()  needed for LOPD ,Use me instead of setting StartCheckingForVics
+#define enableTimesuff 1  //enables  CheckForVicimsAndDropKits()  needed for LOPD ,Use me instead of setting StartCheckingForVics
 #define gotoVic 1 //enable going to victims on sight
 
-#define IR_Sensor_PIN A3
+#define IR_Sensor_PIN 44
 #define LED_PIN 24 //change Me 
 #define max_dist 60
 

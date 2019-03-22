@@ -130,8 +130,8 @@ void trap_cond(){
     if(digitalRead(IR_Sensor_PIN)==1){//if a trap is found 
       motor_stop();
       append_value(posX,posY,3);
-      drive_forward();
-//      delay();
+      drive_backward();
+      delay(300);
       turn(180,1);
       if(GetDist(left_us)>GetDist(right_us)){//turn left if left is greater than right
         turn(90,0);
