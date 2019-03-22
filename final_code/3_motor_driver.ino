@@ -95,7 +95,6 @@ void turn_right(){
   bleft.write(SERVO_SPEED_FOR_LEFT);
   checkForimpTimeStuff();
 }
-
 void drop_kit(int nKits=1){
     DEBUG("drop_kit");
     append_value(posX,posY,2); //set current tile as a victims tile
@@ -110,21 +109,22 @@ void drop_kit(int nKits=1){
     }
     if (nKits==1){
       delay(100);
-      deploy_servo.write(60);
-      delay(500);
       deploy_servo.write(140);
+      delay(500);
+      deploy_servo.write(60);
     }else{
       delay(100);
-      deploy_servo.write(60);
-      delay(500);
       deploy_servo.write(140);
+      delay(500);
+      deploy_servo.write(60);
       delay(100);
-      deploy_servo.write(60);
-      delay(500);
       deploy_servo.write(140);
+      delay(500);
+      deploy_servo.write(60);
    }
    StartCheckingForVics=1;// imagine how hillarouis that rec would look
 }
+
 
 void trap_cond(){
     if(digitalRead(IR_Sensor_PIN)==1){//if a trap is found 

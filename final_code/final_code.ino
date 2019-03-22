@@ -1,7 +1,8 @@
 /*
+ * WORKINGGG CODE RM1 redmi
 Team Name: Alaah
+Farah Rushdy
 Mohamed emad
-farah Rushdy
 Fady Nader
 */
 #include <Wire.h>
@@ -39,12 +40,12 @@ bool bmp;
 #define west 3
 
 
-#define enableTimesuff 1  //enables  CheckForVicimsAndDropKits()  needed for LOPD ,Use me instead of setting StartCheckingForVics
+#define enableTimesuff 0  //enables  CheckForVicimsAndDropKits()  needed for LOPD ,Use me instead of setting StartCheckingForVics
 #define gotoVic 1 //enable going to victims on sight
 
 #define IR_Sensor_PIN A3
-#define LED_PIN 13 //change Me 
-#define max_dist 400
+#define LED_PIN 24 //change Me 
+#define max_dist 60
 
 #define ONE_TILE_DELAY 200
 #define SERVO_90_DELAY 700
@@ -105,14 +106,15 @@ void setup(){
 
   //IR Color Sensor
   pinMode(IR_Sensor_PIN, INPUT);
-
+  pinMode(LED_PIN,1);
+  digitalWrite(LED_PIN,0);
   fright.attach(10);
   fleft.attach(12);
   bright.attach(13);//2t3akas
   bleft.attach(11);//2t3akas
 
   deploy_servo.attach(9);
-  deploy_servo.write(140);
+  deploy_servo.write(60);
   #if USEMATRIX==1
     for (int i=0; i < Y_COLS; i++) {
       for (int j=0; j < X_COLS; j++) {
@@ -164,22 +166,7 @@ void setup(){
 }
 
 void loop(){
- //rightWallfollower();
- //wallFollower();
- //turn(90,0);
- //wFFF();
- //rightWlfollower();
- /*drive_forward();
- delay(2000);
- turn_right();
-  delay(1000);
- turn_left();
- delay(1000);
- drive_backward();
- delay(2000);
- motor_stop();
- while (1){}*/
- // sensorDebug();
+rat();
  /*drive_forward();
  turn(90,1);
  delay(3000);
@@ -190,6 +177,4 @@ void loop(){
   delay(3000);
   turn(90,0);
   delay(3000);*/
-sensorDebug();
-delay(1000);
 }

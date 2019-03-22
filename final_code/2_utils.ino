@@ -113,7 +113,7 @@ void check_start_tile(){
 }
 void checkForimpTimeStuff(){
   unsigned long currentMillis = millis();
-  if (currentMillis - previousMillisCheckForImpTStuff >= 500 && StartCheckingForVics) {//is True every 0.5S
+  if (currentMillis - previousMillisCheckForImpTStuff >= 100 && StartCheckingForVics) {//is True every 0.5S
     previousMillisCheckForImpTStuff = currentMillis;
     DEBUG("checkForimpTimeStuff()");
     checkForLOPD();

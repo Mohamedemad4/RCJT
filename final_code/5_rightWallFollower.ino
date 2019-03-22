@@ -1,4 +1,4 @@
-void wallFollower(){
+void rat(){
  while(GetDist(center_us)>=7 && GetDist(left_us)>5 && GetDist(right_us)>5){
         drive_forward();
         delay(50);
