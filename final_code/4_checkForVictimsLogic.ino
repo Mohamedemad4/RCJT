@@ -12,22 +12,22 @@ void CheckForVicimsAndDropKits(){
      DEBUG("Heated VICTIM is in the left");
      DEBUG_INT(GetIrHeatleft());
     if(isThisWall(left_us)){ //check walls
-      turn(90,1);
+      turn(90,0);
       drop_kit(1);  
       return;
     }if(!isThisWall(left_us) && gotoVic){
-      turn(90,0);
+      turn(90,1);
       return;
     }
   }
   if (!isNotWithinRange(28,GetIrHeatright(),42)){
     DEBUG("Heated VICTIM is in the Right");
     if(isThisWall(right_us)){
-      turn(90,0);
+      turn(90,1);
       drop_kit(1);
       return ;
     }if(!isThisWall(right_us) && gotoVic){
-      turn(90,1);
+      turn(90,0);
       return ;
     }
   }
@@ -63,22 +63,22 @@ bool checkVizWallsandDropKits(){
     else if (cpos==0){
       DEBUG("Victim Is to the left");
       if(isThisWall(left_us)){
-          turn(90,1);
+          turn(90,0);
           drop_kit(nKits);
           return 1;
       }if(!isThisWall(left_us) && gotoVic){
-        turn(90,0); //we orient ourselves towards the victim and proced to return to loop()
+        turn(90,1); //we orient ourselves towards the victim and proced to return to loop()
         return 1;
       }
     }
     else if (cpos==2){
       DEBUG("VICTIM is in the right");
       if(isThisWall(right_us)){
-        turn(90,0);
+        turn(90,1);
         drop_kit(nKits);
         return 1;
       }if(!isThisWall(right_us) && gotoVic){
-        turn(90,1); 
+        turn(90,0); 
         return 1;
       }
     }
