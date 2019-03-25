@@ -8,7 +8,7 @@ void CheckForVicimsAndDropKits(){
     checkVizWallsandDropKits();
     return;
     }
-  if ((GetIrHeatleft()>28) && (GetIrHeatleft()<42)){//!isNotWithinRange(28,GetIrHeatleft(),42)){ //see if there is even anything
+  if ((GetIrHeatleft()>startRange) && (GetIrHeatleft()<endRange)){// || ()){//!isNotWithinRange(28,GetIrHeatleft(),42)){ //see if there is even anything
      DEBUG("Heated VICTIM is in the left");
      DEBUG_INT(GetIrHeatleft());
     if(isThisWall(left_us)){ //check walls

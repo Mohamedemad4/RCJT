@@ -84,7 +84,8 @@ volatile int posY=0; //also change it from check_start_tile();
 0=Wall,1=unvistedTile,2=VictimTile,3=Trap Tile,4=visited tile
 */
 volatile int grid_matrix [X_COLS][Y_COLS];
-
+volatile int endRange=1035;
+volatile int startRange=27;
 NewPing left_us(51,51,max_dist);
 NewPing center_us(49,49,max_dist);
 NewPing right_us(47,47,max_dist);
@@ -94,11 +95,33 @@ Servo fleft;
 Servo bright;
 Servo bleft;
 
+float GetIrHeatleft(int w=0x07){//Check the readme for a des.
+  float temp;
+  uint16_t ret;
+  Wire2.beginTransmission(0x5A); 
+  Wire2.write(byte(w));               
+  Wire2.endTransmission(false);     
+  Wire2.requestFrom(0x5A, 3); 
+  ret = Wire2.read(); 
+  ret |= Wire2.read() << 8;
+  temp=ret;
+  temp *= .02;
+  temp  -= 273.15;
+  return temp;
+}
+
 void(* resetFunc) (void) = 0; //declare reset function @ address 0,crash the machine
 void DEBUG(const char* msg){
   Serial.println(msg);
   Serial1.println(msg);
 }
+int vic1;
+int vic2;
+int vic3;
+void calibration1(){vic1=GetIrHeatleft();}
+void calibration2(){vic2=GetIrHeatleft();}
+void calibration3(){vic3=GetIrHeatleft();}
+
 void setup(){  
   //Push Button
   pinMode(A11,INPUT_PULLUP);
@@ -135,7 +158,6 @@ void setup(){
 
   attachInterrupt(digitalPinToInterrupt(18), vicLocINT, CHANGE); //12GPIO pi after GND pin from the USB side used to specify location  
   attachInterrupt(digitalPinToInterrupt(19), VizVictimINT, CHANGE); //found victim and pi detect pin goes to 16gp b4 GND on rpi
-  attachInterrupt(digitalPinToInterrupt(15), Pause, CHANGE); //button
 
   Wire.begin(); 
   Wire2.begin(); 
@@ -158,12 +180,30 @@ void setup(){
     bmp=false;
     DEBUG("10DOF Not detected at 0x77");
   }
+/*  DEBUG("calibration Mode victim 1");
+  while(digitalRead(15)==1){delay(50);}
+  calibration1();
+  delay(2000);
+  DEBUG("calibration Mode victim 2");
+  while(digitalRead(15)==1){delay(50);}
+  calibration2();
+  delay(2000);
+  DEBUG("calibration Mode victim 3");
+  while(digitalRead(15)==1){delay(50);}
+  calibration3();
+  int avrgTemp=vic1+vic2+vic3/3;
+  Serial.print("avrgTemp: "); 
+  Serial.println(avrgTemp);*/
+
   DEBUG("Ready ...");
-  //while(digitalRead(A11)==1){delay(50);}
+  //while(digitalRead(15)==1){delay(50);}
+  
   DEBUG("Starting...");
+  //attachInterrupt(digitalPinToInterrupt(15), Pause, CHANGE); //button
   StartCheckingForVics=enableTimestuff;
   delay(1000); 
-}
+} 
+
 
 void loop(){
 damn();

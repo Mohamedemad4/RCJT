@@ -1,7 +1,8 @@
 void Pause(){
   noInterrupts();
   DEBUG("PAUSE");
-  while(digitalRead(17)==1){delay(50);}
+  motor_stop();
+  while(digitalRead(15)==1){delay(50);}
   interrupts();
 }
 
@@ -29,7 +30,7 @@ float average (int * array, int len)  // assuming array is int.
 }
 
 bool isThisWall(NewPing sonar){
-    if(GetDist(sonar)>30){
+    if(GetDist(sonar)>10){
       return 0;
     }
     return 1;
