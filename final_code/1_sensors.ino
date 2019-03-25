@@ -12,20 +12,6 @@ float GetIrHeatright(int w=0x07){
   temp  -= 273.15;
   return temp;
 }
-float GetIrHeatleft(int w=0x07){//Check the readme for a des.
-  float temp;
-  uint16_t ret;
-  Wire2.beginTransmission(0x5A); 
-  Wire2.write(byte(w));               
-  Wire2.endTransmission(false);     
-  Wire2.requestFrom(0x5A, 3); 
-  ret = Wire2.read(); 
-  ret |= Wire2.read() << 8;
-  temp=ret;
-  temp *= .02;
-  temp  -= 273.15;
-  return temp;
-}
 
 float getCompHeading(){
    if (mag.testConnection()==false){
